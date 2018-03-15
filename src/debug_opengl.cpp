@@ -79,7 +79,7 @@ float RotateStep = 0.500f, ScaleStep = 0.05, MoveStep = 0.03;
 #define TIMESTEP
 //#ifdef TIMESTEP
 int FrameTime = 30;	// draw frequency
-int StepTime = 500;		// step frequency
+int StepTime = 50;		// step frequency
 //#endif
 
 int PAUSE = 1;
@@ -309,7 +309,7 @@ void myStep(int id)
 	else if (id == 1)
 	{
 		if (PAUSE == 0)
-			function_step(StepTime);
+			function_step(StepTime);	// time step in ms
 		glutTimerFunc(StepTime,myStep,id);
 	}
 }

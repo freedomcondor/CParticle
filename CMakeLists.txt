@@ -56,8 +56,10 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(main src/debug_opengl.cpp
 					src/function_opengl.cpp
-					src/CVector/src/Vector3.cpp
-					src/CVector/src/Quaternion.cpp
+					src/CVector/Vector3.cpp
+					src/CVector/Quaternion.cpp
+					src/Particle.cpp
+					src/DirParticle.cpp
 			  )
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
