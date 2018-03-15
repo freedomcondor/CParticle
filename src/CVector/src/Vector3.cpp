@@ -2,6 +2,8 @@
 #include <stdio.h>	// for sprintf in toStr and printf
 #include <math.h>	// for sqrt
 
+//i am a sub
+
 Vector3::Vector3()
 {
 	set(0,0,0);
