@@ -48,6 +48,8 @@ int function_init()
 	a = Robot(0,0,0,
 				0,1,0,
 				0,0,1);
+	a.ctrlInit();
+
 	b = Signal(0.1,0,0,
 				0,1,0,
 				0,0,1);

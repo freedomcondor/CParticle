@@ -6,6 +6,7 @@
 class LuaController
 {
 public:
+	LuaController();
 	lua_State *L;
 	int* robot;
 

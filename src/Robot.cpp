@@ -51,6 +51,12 @@ int Robot::commonInit()
 	return 0;
 }
 
+int Robot::ctrlInit()
+{
+	ctrl.init((int *)this);
+	return 0;
+}
+
 int Robot::armUpdate()
 {
 	armVec = dF.nor() * armLen;
@@ -65,7 +71,6 @@ int Robot::armUpdate()
 int Robot::run(double time)
 {
 	ctrl.step();
-	printf("robot run speed%lf\n",speed);
 	setv(dF.nor() * speed);
 
 	DirParticle::run(time);
@@ -75,7 +80,6 @@ int Robot::run(double time)
 }
 int Robot::setspeed(double x)
 {
-	printf("in setspeed %lf\n",x);
 	speed = x;
 	return 0;
 }

@@ -1,11 +1,11 @@
 
 function init()
-	print("lua init")
+	print("lua init",robot)
 	robot:setspeed(2);
 end
 
 function step()
-	print("lua step")
+	print("lua step",robot)
 	robot:setspeed(3);
 end
 

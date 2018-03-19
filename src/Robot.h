@@ -15,6 +15,9 @@ public:
 	int armUpdate();
 
 	LuaController ctrl;
+	int ctrlInit();	
+		// in have to call this in main,(like a.ctrlInit) after construct
+		// otherwise it is the constructor it pushed in lua
 
 	Robot();
 	Robot(double x,double y,double z);
