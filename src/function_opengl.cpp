@@ -44,7 +44,7 @@ Sensor c;
 
 int function_init()
 {
-	printf("i am init\n");
+	printf("i am init of main\n");
 	a = Robot(0,0,0,
 				0,1,0,
 				0,0,1);
@@ -64,7 +64,7 @@ int function_init()
 
 int function_step(double time)	// time in ms
 {
-	a.setspeed(CH2);
+	//a.setspeed(CH2);
 	//a.setarm(CH2 * 180 / 3.1415926535898);
 	a.setturn(CH1 * 180 / 3.1415926535898);
 	a.run(time/1000);
@@ -127,6 +127,7 @@ int drawRobot(const Robot& r)
 	drawCylinder(r.size/8, r.size/8, r.size/2,
 			 			r.l.x, r.l.y, r.l.z,
 			 			r.armVec.x, r.armVec.y, r.armVec.z);
+	return 0;
 }
 
 

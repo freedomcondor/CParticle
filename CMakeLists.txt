@@ -47,7 +47,9 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 #############################################################
 ##   add lua
 #############################################################
-#find_package(Lua REQUIRED)
+find_package(Lua REQUIRED)
+#MESSAGE(STATUS "lua lib: ${LUA_LIBRARIES}")  
+#MESSAGE(STATUS "lua inc: ${LUA_INCLUDE_DIR}")  
 #${LUA_INCLUDE_DIR}
 #${LUA_LIBRARIES}
 #############################################################
@@ -62,12 +64,15 @@ add_executable(main src/debug_opengl.cpp
 					src/DirParticle.cpp
 					src/Robot.cpp
 					src/Sensor.cpp
+					src/LuaController.cpp
 			  )
 
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
+include_directories(${OPENGL_INCLUDE_DIRS} 
+					${GLUT_INCLUDE_DIRS}
 					${LUA_INCLUDE_DIR}
 		)
 
-target_link_libraries(main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY}
+target_link_libraries(main 	${OPENGL_LIBRARIES} 
+							${GLUT_LIBRARY}
 							${LUA_LIBRARIES}
 		)

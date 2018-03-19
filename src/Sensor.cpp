@@ -85,9 +85,11 @@ Signal::~Signal()
 int Sensor::commonInit()
 {
 	n = 0;
+	return 0;
 }
 int Signal::commonInit()
 {
+	return 0;
 }
 
 //////  function  ////////////////////////////////////////////////////////////
@@ -129,5 +131,5 @@ int Sensor::sense(const Robot& x)
 }
 int sensecheck(const Signal& x)
 {
-
+	return 0;
 }

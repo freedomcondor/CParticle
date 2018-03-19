@@ -2,6 +2,7 @@
 #define ROBOT
 
 #include "DirParticle.h"
+#include "LuaController.h"
 
 class Robot	: public DirParticle
 {
@@ -12,6 +13,8 @@ public:
 	double size = 0.1;
 	double armLen = size;
 	int armUpdate();
+
+	LuaController ctrl;
 
 	Robot();
 	Robot(double x,double y,double z);

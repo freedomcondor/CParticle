@@ -38,13 +38,17 @@ Robot::Robot(const Vector3& _x,
 //DirParticle(const DirParticle& _x);
 Robot::~Robot()
 {
+	ctrl.exit();
 	//printf("I am the destructor of Robot\n");
 }
 
 //////////////////////////////////////////////////////////////////
 int Robot::commonInit()
 {
+	ctrl.init((int *)this);
 	armUpdate();
+
+	return 0;
 }
 
 int Robot::armUpdate()
@@ -53,11 +57,15 @@ int Robot::armUpdate()
 	Quaternion q;
 	q.setFromRotation((dF*dU).nor(),arm*PI/180);
 	armVec = q.toRotate(armVec);
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////
 int Robot::run(double time)
 {
+	ctrl.step();
+	printf("robot run speed%lf\n",speed);
 	setv(dF.nor() * speed);
 
 	DirParticle::run(time);
@@ -67,6 +75,7 @@ int Robot::run(double time)
 }
 int Robot::setspeed(double x)
 {
+	printf("in setspeed %lf\n",x);
 	speed = x;
 	return 0;
 }
