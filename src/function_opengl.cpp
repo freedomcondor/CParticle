@@ -6,6 +6,7 @@
 //#include "Particle.h"
 #include "DirParticle.h"
 #include"Robot.h"
+#include"Sensor.h"
 #include"CVector/Vector3.h"
 
 //#include<lua.hpp>
@@ -38,6 +39,8 @@ int function_exit()
 //DirParticle a(0,0,0);
 //DirParticle a(0,0,0,
 Robot a;
+Signal b;
+Sensor c;
 
 int function_init()
 {
@@ -45,6 +48,16 @@ int function_init()
 	a = Robot(0,0,0,
 				0,1,0,
 				0,0,1);
+	b = Signal(0.1,0,0,
+				0,1,0,
+				0,0,1);
+
+	c = Sensor(-0.1,0,0,
+				0,1,0,
+				0,0,1);
+	
+	b.copy(a);
+	c.sense(a);
 
 	return 0;
 }
@@ -52,6 +65,7 @@ int function_init()
 int function_step(double time)	// time in ms
 {
 	a.setspeed(CH2);
+	//a.setarm(CH2 * 180 / 3.1415926535898);
 	a.setturn(CH1 * 180 / 3.1415926535898);
 	a.run(time/1000);
 	//clock_t start_t, end_t;
@@ -62,8 +76,10 @@ int function_step(double time)	// time in ms
 }
 
 ////////////////////////// draw ///////////////////
+int drawRobot(const Robot& r);
 int function_draw()
 {
+	/*
 	drawSphere(a.l.x, a.l.y, a.l.z, 0.02);
 	drawCylinder(	0.01,0.01,0.05,
 					a.l.x, a.l.y, a.l.z,
@@ -71,6 +87,8 @@ int function_draw()
 	drawCylinder(	0.01,0.01,0.05,
 					a.l.x, a.l.y, a.l.z,
 					a.dU.x, a.dU.y, a.dU.z );
+	*/
+	drawRobot(a);
 
 	return 0;
 }
@@ -98,6 +116,17 @@ int function_draw2()
 	*/
 		
 	return 0;
+}
+
+int drawRobot(const Robot& r)
+{
+	drawCube(r.size/2, 	r.l.x,  r.l.y,  r.l.z,
+			 			r.dF.x, r.dF.y, r.dF.z,
+			 			r.dU.x, r.dU.y, r.dU.z);
+
+	drawCylinder(r.size/8, r.size/8, r.size/2,
+			 			r.l.x, r.l.y, r.l.z,
+			 			r.armVec.x, r.armVec.y, r.armVec.z);
 }
 
 

@@ -61,6 +61,7 @@ add_executable(main src/debug_opengl.cpp
 					src/Particle.cpp
 					src/DirParticle.cpp
 					src/Robot.cpp
+					src/Sensor.cpp
 			  )
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}

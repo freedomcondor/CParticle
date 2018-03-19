@@ -6,7 +6,12 @@
 class Robot	: public DirParticle
 {
 public:
-	double speed;	// the speed toward front(dirFront or dF)
+	double speed = 0;	// the speed toward front(dirFront or dF)
+	double arm = 0;		// in degree
+	Vector3 armVec;
+	double size = 0.1;
+	double armLen = size;
+	int armUpdate();
 
 	Robot();
 	Robot(double x,double y,double z);
@@ -19,12 +24,14 @@ public:
 	Robot(	const Vector3& _x,
 			const Vector3& _y,
 			const Vector3& _z);
+	int commonInit();
 	//Particle(const Particle& _x);
 	~Robot();
 
 	int run(double time);
 	int setspeed(double x);
 	int setturn(double x);
+	int setarm(double x);	// in degree  0-90
 };
 
 #endif

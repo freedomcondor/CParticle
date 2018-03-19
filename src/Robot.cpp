@@ -6,23 +6,17 @@
 Robot::Robot() 
 	:DirParticle()
 {
-	setdF(1,0,0); setdU(0,0,1);
-	setw(0,0,0); setwa(0,0,0);
-	speed = 0;
+	commonInit();
 }
 Robot::Robot(double x,double y,double z) 
 	:DirParticle(x,y,z)
 {
-	setdF(1,0,0); setdU(0,0,1);
-	setw(0,0,0); setwa(0,0,0);
-	speed = 0;
+	commonInit();
 }
 Robot::Robot(const Vector3& _x)
 	:DirParticle(_x)
 {
-	setdF(1,0,0); setdU(0,0,1);
-	setw(0,0,0); setwa(0,0,0);
-	speed = 0;
+	commonInit();
 }
 
 Robot::Robot(double x,double y,double z,
@@ -30,9 +24,7 @@ Robot::Robot(double x,double y,double z,
 				double p,double q,double r)
 	:DirParticle(x,y,z)
 {
-	setdF(a,b,c); setdU(p,q,r);
-	setw(0,0,0); setwa(0,0,0);
-	speed = 0;
+	commonInit();
 }
 
 Robot::Robot(const Vector3& _x,
@@ -40,9 +32,7 @@ Robot::Robot(const Vector3& _x,
 				const Vector3& _z)
 	:DirParticle(_x)
 {
-	setdF(_y); setdU(_z);
-	setw(0,0,0); setwa(0,0,0);
-	speed = 0;
+	commonInit();
 }
 
 //DirParticle(const DirParticle& _x);
@@ -52,10 +42,27 @@ Robot::~Robot()
 }
 
 //////////////////////////////////////////////////////////////////
+int Robot::commonInit()
+{
+	armUpdate();
+}
+
+int Robot::armUpdate()
+{
+	armVec = dF.nor() * armLen;
+	Quaternion q;
+	q.setFromRotation((dF*dU).nor(),arm*PI/180);
+	armVec = q.toRotate(armVec);
+}
+
+//////////////////////////////////////////////////////////////////
 int Robot::run(double time)
 {
 	setv(dF.nor() * speed);
+
 	DirParticle::run(time);
+	armUpdate();
+
 	return 0;
 }
 int Robot::setspeed(double x)
@@ -66,5 +73,10 @@ int Robot::setspeed(double x)
 int Robot::setturn(double x)	// x in degree
 {
 	setw(Vector3(0,0,1)*x*PI/180);
+	return 0;
+}
+int Robot::setarm(double x)
+{
+	arm = x;
 	return 0;
 }
