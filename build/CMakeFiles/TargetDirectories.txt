@@ -1,3 +1,0 @@
-/mnt/c/Users/freed/Desktop/CParticle/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/freed/Desktop/CParticle/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/freed/Desktop/CParticle/build/CMakeFiles/main.dir
