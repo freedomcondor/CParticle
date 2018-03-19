@@ -60,6 +60,7 @@ add_executable(main src/debug_opengl.cpp
 					src/CVector/Quaternion.cpp
 					src/Particle.cpp
 					src/DirParticle.cpp
+					src/Robot.cpp
 			  )
 
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}

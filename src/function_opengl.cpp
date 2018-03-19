@@ -3,8 +3,9 @@
 #include<time.h>  // for time measuring
 
 #include"function_opengl.h"
-#include"Particle.h"
-#include"DirParticle.h"
+//#include "Particle.h"
+#include "DirParticle.h"
+#include"Robot.h"
 #include"CVector/Vector3.h"
 
 //#include<lua.hpp>
@@ -35,26 +36,23 @@ int function_exit()
 }
 
 //DirParticle a(0,0,0);
-DirParticle a(0,0,0,
-				0,1,0,
-				0,0,-1);
-
-DirParticle b(0.5,0,0,
-				0,1,0,
-				0,0,1);
+//DirParticle a(0,0,0,
+Robot a;
 
 int function_init()
 {
 	printf("i am init\n");
-	//a.setv(0,0,0.02);
-	a.seta(Vector3(0,0,0.02));
-	a.setwa(Vector3(0,0.2,0.2));
+	a = Robot(0,0,0,
+				0,1,0,
+				0,0,1);
 
 	return 0;
 }
 
 int function_step(double time)	// time in ms
 {
+	a.setspeed(CH2);
+	a.setturn(CH1 * 180 / 3.1415926535898);
 	a.run(time/1000);
 	//clock_t start_t, end_t;
 	//start_t = clock();
@@ -74,13 +72,6 @@ int function_draw()
 					a.l.x, a.l.y, a.l.z,
 					a.dU.x, a.dU.y, a.dU.z );
 
-	drawSphere(b.l.x, b.l.y, b.l.z, 0.02);
-	drawCylinder(	0.01,0.01,0.05,
-					b.l.x, b.l.y, b.l.z,
-					b.dF.x, b.dF.y, b.dF.z );
-	drawCylinder(	0.01,0.01,0.05,
-					b.l.x, b.l.y, b.l.z,
-					b.dU.x, b.dU.y, b.dU.z );
 	return 0;
 }
 

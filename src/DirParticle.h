@@ -9,7 +9,7 @@ class DirParticle : public Particle
 {
 public:
 	// in father, Vector3 l,v,a
-	Vector3 dF,dU;	// dirFront, dirUp
+	Vector3 dF,dU;	// dirFront, dirUp	not necessary a nor
 	Vector3 w,wa;	
 		// rotation speed, rotation acc, right hand, len is speed in rad
 
