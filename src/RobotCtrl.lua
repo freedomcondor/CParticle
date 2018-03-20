@@ -1,14 +1,14 @@
 
 function init()
-	print("lua init",robot)
-	robot:setspeed(2);
+	print("robot lua init",robot)
+	robot:setspeed(1);
 end
 
 function step()
-	print("lua step",robot)
-	robot:setspeed(3);
+	print("robot lua step",robot)
+	robot:setturn(30);
 end
 
 function destroy()
-	print("lua destroy")
+	print("robot lua destroy")
 end

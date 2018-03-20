@@ -63,6 +63,7 @@ add_executable(main src/debug_opengl.cpp
 					src/Particle.cpp
 					src/DirParticle.cpp
 					src/Robot.cpp
+					src/Box.cpp
 					src/Sensor.cpp
 					src/LuaController.cpp
 			  )

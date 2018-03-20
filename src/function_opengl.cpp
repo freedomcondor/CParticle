@@ -3,11 +3,11 @@
 #include<time.h>  // for time measuring
 
 #include"function_opengl.h"
-//#include "Particle.h"
+#include"CVector/Vector3.h"
 #include "DirParticle.h"
 #include"Robot.h"
+#include"Box.h"
 #include"Sensor.h"
-#include"CVector/Vector3.h"
 
 //#include<lua.hpp>
 
@@ -39,7 +39,7 @@ int function_exit()
 //DirParticle a(0,0,0);
 //DirParticle a(0,0,0,
 Robot a;
-Signal b;
+Box b;
 Sensor c;
 
 int function_init()
@@ -50,15 +50,15 @@ int function_init()
 				0,0,1);
 	a.ctrlInit();
 
-	b = Signal(0.1,0,0,
+	b = Box(0.1,0,0,
 				0,1,0,
 				0,0,1);
+	b.ctrlInit();
 
 	c = Sensor(-0.1,0,0,
 				0,1,0,
 				0,0,1);
 	
-	b.copy(a);
 	c.sense(a);
 
 	return 0;
@@ -70,6 +70,7 @@ int function_step(double time)	// time in ms
 	//a.setarm(CH2 * 180 / 3.1415926535898);
 	a.setturn(CH1 * 180 / 3.1415926535898);
 	a.run(time/1000);
+	b.run(time/1000);
 	//clock_t start_t, end_t;
 	//start_t = clock();
 	//end_t = clock();
@@ -79,6 +80,7 @@ int function_step(double time)	// time in ms
 
 ////////////////////////// draw ///////////////////
 int drawRobot(const Robot& r);
+int drawBox(const Box& r);
 int function_draw()
 {
 	/*
@@ -91,6 +93,7 @@ int function_draw()
 					a.dU.x, a.dU.y, a.dU.z );
 	*/
 	drawRobot(a);
+	drawBox(b);
 
 	return 0;
 }
@@ -129,6 +132,13 @@ int drawRobot(const Robot& r)
 	drawCylinder(r.size/8, r.size/8, r.size/2,
 			 			r.l.x, r.l.y, r.l.z,
 			 			r.armVec.x, r.armVec.y, r.armVec.z);
+	return 0;
+}
+int drawBox(const Box& r)
+{
+	drawCube(r.size/2, 	r.l.x,  r.l.y,  r.l.z,
+			 			r.dF.x, r.dF.y, r.dF.z,
+			 			r.dU.x, r.dU.y, r.dU.z);
 	return 0;
 }
 
