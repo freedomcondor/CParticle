@@ -7,7 +7,7 @@
 class Box	: public DirParticle
 {
 public:
-	double size = 0.1;
+	double size;
 
 	BoxController ctrl;
 	int ctrlInit();	

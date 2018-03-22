@@ -27,6 +27,15 @@ public:
 	//Particle(const Particle& _x);
 	~DirParticle();
 
+	int set(	double x,double y,double z);
+	int set(	double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r);
+	int set(	const Vector3& _x);
+	int set(	const Vector3& _x,
+				const Vector3& _y,
+				const Vector3& _z);
+
 	int setdF(double x,double y,double z);
 	int setdF(const Vector3& _x);
 	int setdU(double x,double y,double z);

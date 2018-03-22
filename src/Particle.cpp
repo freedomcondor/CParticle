@@ -21,6 +21,17 @@ Particle::~Particle()
 	//printf("I am the destructor of Particle\n");
 }
 
+int Particle::set(double x,double y,double z)
+{
+	setl(x,y,z);
+	return 0;
+}
+int Particle::set(const Vector3& _x)
+{
+	setl(_x);
+	return 0;
+}
+
 int Particle::setl(double x,double y,double z)
 {
 	l.x=x;	l.y=y;	l.z=z;

@@ -47,6 +47,40 @@ DirParticle::~DirParticle()
 	//printf("I am the destructor of DirParticle\n");
 }
 
+int DirParticle::set(	double x,double y,double z)
+{
+	Particle::set(x,y,z);
+	//l.x = x; l.y = y; l.z = z;
+	setdF(1,0,0); setdU(0,0,1);
+	setw(0,0,0); setwa(0,0,0);
+	return 0;
+}
+int DirParticle::set(	double x,double y,double z,
+			double a,double b,double c,
+			double p,double q,double r)
+{
+	l.x = x; l.y = y; l.z = z;
+	setdF(a,b,c); setdU(p,q,r);
+	setw(0,0,0); setwa(0,0,0);
+	return 0;
+}
+int DirParticle::set(	const Vector3& _x)
+{
+	l = _x;
+	setdF(1,0,0); setdU(0,0,1);
+	setw(0,0,0); setwa(0,0,0);
+	return 0;
+}
+int DirParticle::set(	const Vector3& _x,
+			const Vector3& _y,
+			const Vector3& _z)
+{
+	l = _x;
+	setdF(_y); setdU(_z);
+	setw(0,0,0); setwa(0,0,0);
+	return 0;
+}
+
 ///////////////////////////////////////////////////////////
 int DirParticle::setdF(double x,double y,double z)
 {

@@ -22,7 +22,7 @@ Robot::Robot(const Vector3& _x)
 Robot::Robot(double x,double y,double z,
 				double a,double b,double c,
 				double p,double q,double r)
-	:DirParticle(x,y,z)
+	:DirParticle(x,y,z,a,b,c,p,q,r)
 {
 	commonInit();
 }
@@ -30,7 +30,7 @@ Robot::Robot(double x,double y,double z,
 Robot::Robot(const Vector3& _x,
 				const Vector3& _y,
 				const Vector3& _z)
-	:DirParticle(_x)
+	:DirParticle(_x,_y,_z)
 {
 	commonInit();
 }
@@ -42,9 +42,42 @@ Robot::~Robot()
 	//printf("I am the destructor of Robot\n");
 }
 
+int Robot::set(	double x,double y,double z)
+{
+	DirParticle::set(x,y,z);
+	armUpdate();
+	return 0;
+}
+int Robot::set(	double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r)
+{
+	DirParticle::set(x,y,z,a,b,c,p,q,r);
+	armUpdate();
+	return 0;
+}
+int Robot::set(	const Vector3& _x)
+{
+	DirParticle::set(_x);
+	armUpdate();
+	return 0;
+}
+int Robot::set(	const Vector3& _x,
+				const Vector3& _y,
+				const Vector3& _z)
+{
+	DirParticle::set(_x,_y,_z);
+	armUpdate();
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////
 int Robot::commonInit()
 {
+	speed = 0;	// the speed toward front(dirFront or dF)
+	arm = 0;		// in degree
+	size = 0.1;
+
 	ctrl.init((int *)this);
 	armUpdate();
 

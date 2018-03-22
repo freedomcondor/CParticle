@@ -16,6 +16,8 @@ public:
 	//Particle(const Particle& _x);
 	~Particle();
 
+	int set(double x,double y,double z);
+	int set(const Vector3& _x);
 	int setl(double x,double y,double z);
 	int setl(const Vector3& _x);
 	int setv(double x,double y,double z);

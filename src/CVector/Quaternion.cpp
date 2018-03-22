@@ -45,6 +45,33 @@ Quaternion& Quaternion::setFromRotation(const Vector3& _l, double _w)
 	return *this;
 }
 
+Quaternion& Quaternion::setFrom4Vecs(const Vector3& _abc_o,const Vector3& _pqr_o,
+							 const Vector3& _abc,  const Vector3& _pqr)
+{
+	//-- give 4 vectors, rotation from the from the first two to last two
+	//-- some problem for specific situation
+	//-- 		only general case and
+	//-- 		only work for right angle and pqr_o = pqr
+	Vector3 abc = _abc.nor();
+	Vector3 pqr = _pqr.nor();
+	Vector3 abc_o = _abc_o.nor();
+	Vector3 pqr_o = _pqr_o.nor();
+
+	Vector3 axis = (abc-abc_o) * (pqr - pqr_o);
+	axis = axis.nor();
+
+	Vector3 rot_o = abc_o - (axis ^ abc) * axis;
+	Vector3 rot_d = abc - (axis ^ abc) * axis;
+	rot_o = rot_o.nor();
+	rot_d = rot_d.nor();
+	double cos = rot_o ^ rot_d;
+	axis = rot_o * rot_d;
+	double th = acos(cos);
+
+	this->setFromRotation(axis,th);
+	return *this;
+}
+
 char* Quaternion::toStr()
 {
 	sprintf(strForMe, "(%s, %lf)",l.toStr(),w);

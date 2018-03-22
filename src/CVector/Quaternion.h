@@ -18,6 +18,8 @@ public:
 	int set(const Vector3& _l, double _w);
 	int set(const Quaternion& _x);
 	Quaternion& setFromRotation(const Vector3& _l, double _w);
+	Quaternion& setFrom4Vecs(const Vector3& _abc_o,const Vector3& _pqr_o,
+							 const Vector3& _abc,  const Vector3& _pqr);
 
 	// operators
 	Quaternion& operator+=(const Quaternion& _x);

@@ -1,11 +1,11 @@
 
 function init()
-	print("robot lua init",robot)
+	--print("robot lua init",robot)
 	robot:setspeed(1);
 end
 
 function step()
-	print("robot lua step",robot)
+	--print("robot lua step",robot)
 	robot:setturn(30);
 end
 

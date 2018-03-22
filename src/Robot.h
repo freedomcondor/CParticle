@@ -34,6 +34,15 @@ public:
 	//Particle(const Particle& _x);
 	~Robot();
 
+	int set(	double x,double y,double z);
+	int set(	double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r);
+	int set(	const Vector3& _x);
+	int set(	const Vector3& _x,
+				const Vector3& _y,
+				const Vector3& _z);
+
 	int run(double time);
 	int setspeed(double x);
 	int setturn(double x);	// in degree

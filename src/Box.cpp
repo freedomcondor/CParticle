@@ -22,7 +22,7 @@ Box::Box(const Vector3& _x)
 Box::Box(double x,double y,double z,
 				double a,double b,double c,
 				double p,double q,double r)
-	:DirParticle(x,y,z)
+	:DirParticle(x,y,z,a,b,c,p,q,r)
 {
 	commonInit();
 }
@@ -30,7 +30,7 @@ Box::Box(double x,double y,double z,
 Box::Box(const Vector3& _x,
 				const Vector3& _y,
 				const Vector3& _z)
-	:DirParticle(_x)
+	:DirParticle(_x,_y,_z)
 {
 	commonInit();
 }
@@ -45,6 +45,7 @@ Box::~Box()
 //////////////////////////////////////////////////////////////////
 int Box::commonInit()
 {
+	size = 0.1;
 	ctrl.init((int *)this);
 
 	return 0;

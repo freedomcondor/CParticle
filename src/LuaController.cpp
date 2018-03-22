@@ -136,7 +136,7 @@ int BoxController::init(int* r)
 int LuaController::step()
 {
 	// call lua step
-	printf("Controller step\n");
+	//printf("Controller step\n");
 	lua_settop(L,0);
 	lua_getglobal(L,"step"); // stack 1 is the function
 	if (lua_pcall(L,0,0,0) != 0)    // one para, one return

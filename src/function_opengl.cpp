@@ -9,7 +9,8 @@
 #include"Box.h"
 #include"Sensor.h"
 
-//#include<lua.hpp>
+//#define LISTNODETYPE Signal
+#include"List/List.h"
 
 #define pi 3.1415926
 #define ZERO 0.0000001
@@ -45,21 +46,22 @@ Sensor c;
 int function_init()
 {
 	printf("i am init of main\n");
-	a = Robot(0,0,0,
-				0,1,0,
+	a.set(0,0,0,
+				1,1,0,
 				0,0,1);
 	a.ctrlInit();
 
-	b = Box(0.1,0,0,
+	b.set(0.1,0,0,
 				0,1,0,
 				0,0,1);
 	b.ctrlInit();
 
-	c = Sensor(-0.1,0,0,
-				0,1,0,
-				0,0,1);
-	
+	c.set(0,-1,0,
+			   0,1,0,
+			   0,0,1);
+
 	c.sense(a);
+	c.sense(b);
 
 	return 0;
 }
@@ -125,7 +127,7 @@ int function_draw2()
 
 int drawRobot(const Robot& r)
 {
-	drawCube(r.size/2, 	r.l.x,  r.l.y,  r.l.z,
+	drawCube(r.size/3, 	r.l.x,  r.l.y,  r.l.z,
 			 			r.dF.x, r.dF.y, r.dF.z,
 			 			r.dU.x, r.dU.y, r.dU.z);
 

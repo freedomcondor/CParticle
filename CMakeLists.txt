@@ -66,6 +66,7 @@ add_executable(main src/debug_opengl.cpp
 					src/Box.cpp
 					src/Sensor.cpp
 					src/LuaController.cpp
+					src/List/List.cpp
 			  )
 
 include_directories(${OPENGL_INCLUDE_DIRS} 
