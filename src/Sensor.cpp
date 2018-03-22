@@ -1,5 +1,6 @@
 #include "Sensor.h"
-#include "DirParticle.h"
+#include "Robot.h"	// for copy
+#include "Box.h"
 
 #define PI 3.1415926535898
 #define DOUBLE_ERR 0.0000001

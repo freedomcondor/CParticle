@@ -2,14 +2,15 @@
 #define SENSOR
 
 #include "CVector/Vector3.h"
-#include "Robot.h"
-#include "Box.h"
+#include "DirParticle.h"
+#include "List/List.h"		// for list and signal
 
 #define MAXSENSE 50
 #define SIGROBOT 0
 #define SIGBOX 1
 
-#include "List/List.h"
+class Robot;
+class Box;
 
 class Sensor : public DirParticle
 {

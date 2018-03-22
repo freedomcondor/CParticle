@@ -46,6 +46,7 @@ int Robot::set(	double x,double y,double z)
 {
 	DirParticle::set(x,y,z);
 	armUpdate();
+	sensorUpdate();
 	return 0;
 }
 int Robot::set(	double x,double y,double z,
@@ -54,12 +55,14 @@ int Robot::set(	double x,double y,double z,
 {
 	DirParticle::set(x,y,z,a,b,c,p,q,r);
 	armUpdate();
+	sensorUpdate();
 	return 0;
 }
 int Robot::set(	const Vector3& _x)
 {
 	DirParticle::set(_x);
 	armUpdate();
+	sensorUpdate();
 	return 0;
 }
 int Robot::set(	const Vector3& _x,
@@ -68,6 +71,7 @@ int Robot::set(	const Vector3& _x,
 {
 	DirParticle::set(_x,_y,_z);
 	armUpdate();
+	sensorUpdate();
 	return 0;
 }
 
@@ -77,9 +81,11 @@ int Robot::commonInit()
 	speed = 0;	// the speed toward front(dirFront or dF)
 	arm = 0;		// in degree
 	size = 0.1;
+	armLen = size;
 
 	ctrl.init((int *)this);
 	armUpdate();
+	sensorUpdate();
 
 	return 0;
 }
@@ -100,6 +106,12 @@ int Robot::armUpdate()
 	return 0;
 }
 
+int Robot::sensorUpdate()
+{
+	sensor.set(l,dF,dU);
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////
 int Robot::run(double time)
 {
@@ -108,6 +120,7 @@ int Robot::run(double time)
 
 	DirParticle::run(time);
 	armUpdate();
+	sensorUpdate();
 
 	return 0;
 }

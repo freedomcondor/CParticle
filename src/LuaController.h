@@ -9,6 +9,9 @@ public:
 	//LuaController();
 	lua_State *L;
 
+	int *selfsensor;
+	int pushSensor();
+
 	int init(int *r);
 	int step();
 	int exit();

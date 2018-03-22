@@ -42,6 +42,35 @@ Box::~Box()
 	//printf("I am the destructor of Box\n");
 }
 
+int Box::set(	double x,double y,double z)
+{
+	DirParticle::set(x,y,z);
+	sensorUpdate();
+	return 0;
+}
+int Box::set(	double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r)
+{
+	DirParticle::set(x,y,z,a,b,c,p,q,r);
+	sensorUpdate();
+	return 0;
+}
+int Box::set(	const Vector3& _x)
+{
+	DirParticle::set(_x);
+	sensorUpdate();
+	return 0;
+}
+int Box::set(	const Vector3& _x,
+				const Vector3& _y,
+				const Vector3& _z)
+{
+	DirParticle::set(_x,_y,_z);
+	sensorUpdate();
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////
 int Box::commonInit()
 {
@@ -61,6 +90,7 @@ int Box::ctrlInit()
 int Box::run(double time)
 {
 	ctrl.step();
+	sensorUpdate();
 	setv(dF.nor() * v.len());
 
 	DirParticle::run(time);
@@ -71,5 +101,11 @@ int Box::run(double time)
 int Box::setspeed(double x)
 {
 	setv(dF.nor() * x);
+	return 0;
+}
+
+int Box::sensorUpdate()
+{
+	sensor.set(l,dF,dU);
 	return 0;
 }

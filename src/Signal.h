@@ -3,8 +3,9 @@
 
 #include "CVector/Vector3.h"
 #include "CVector/Quaternion.h"
-#include "Robot.h"
-#include "Box.h"
+
+class Robot;
+class Box;
 
 class Signal
 {
@@ -35,5 +36,6 @@ public:
 	~Signal();
 	int commonInit();
 };
+
 
 #endif

@@ -49,12 +49,14 @@ int function_init()
 	a.set(0,0,0,
 				1,1,0,
 				0,0,1);
-	a.ctrlInit();
+	//a.ctrlInit();
 
 	b.set(0.1,0,0,
 				0,1,0,
 				0,0,1);
-	b.ctrlInit();
+	//b.ctrlInit();
+	a.sensor.sense(b);
+	b.sensor.sense(a);
 
 	c.set(0,-1,0,
 			   0,1,0,

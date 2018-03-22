@@ -3,21 +3,29 @@
 
 #include "DirParticle.h"
 #include "LuaController.h"
+#include "Sensor.h"
 
 class Robot	: public DirParticle
 {
 public:
-	double speed = 0;	// the speed toward front(dirFront or dF)
-	double arm = 0;		// in degree
+	//double speed = 0;	// the speed toward front(dirFront or dF)
+	double speed;	// the speed toward front(dirFront or dF)
+	//double arm = 0;		// in degree
+	double arm;		// in degree
 	Vector3 armVec;
-	double size = 0.1;
-	double armLen = size;
-	int armUpdate();
+	//double size = 0.1;
+	double size;
+	//double armLen = size;
+	double armLen;
+	int armUpdate();	// also update sensor
 
 	RobotController ctrl;
 	int ctrlInit();	
-		// in have to call this in main,(like a.ctrlInit) after construct
+		// in main may have to call this in main,(like a.ctrlInit) after construct
 		// otherwise it is the constructor it pushed in lua
+
+	Sensor sensor;
+	int sensorUpdate();
 
 	Robot();
 	Robot(double x,double y,double z);

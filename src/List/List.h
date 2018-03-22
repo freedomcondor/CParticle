@@ -11,6 +11,9 @@ typedef LISTNODETYPE nodetype;
 
 #include <stdlib.h>
 #include "../Signal.h"
+
+class Signal;
+
 typedef Signal nodetype;
 
 struct node

@@ -37,6 +37,7 @@ static const luaL_Reg clib_robot[] =
 RobotController::RobotController()
 {
 	robot = NULL;
+	selfsensor = NULL;
 
 	L = luaL_newstate();
 	luaL_openlibs(L);
@@ -61,6 +62,7 @@ RobotController::RobotController()
 int RobotController::init(int* r)
 {
 	robot = r;
+	selfsensor = (int*)&(  ((Robot*)r)->sensor   );
 
 	lua_pushlightuserdata(L,(void*)robot);
 	luaL_getmetatable(L,"Robot");
@@ -93,6 +95,7 @@ static const luaL_Reg clib_box[] =
 BoxController::BoxController()
 {
 	box = NULL;
+	selfsensor = NULL;
 
 	L = luaL_newstate();
 	luaL_openlibs(L);
@@ -117,6 +120,7 @@ BoxController::BoxController()
 int BoxController::init(int* r)
 {
 	box = r;
+	selfsensor = (int*)&(  ((Box*)r)->sensor   );
 
 	lua_pushlightuserdata(L,(void*)box);
 	luaL_getmetatable(L,"Box");
@@ -133,11 +137,71 @@ int BoxController::init(int* r)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+int lua_pushSig(lua_State *L, Signal sig);
+int LuaController::pushSensor()
+{
+	Sensor *s;
+	s = (Sensor*)selfsensor;
+
+	struct node *head, *p;
+
+	lua_newtable(L);
+		lua_pushstring(L,"n");
+		lua_pushnumber(L,s->n);
+		lua_settable(L,-3);
+
+		head = s->siglist.head;
+		p = head->next;
+		for (int i = 1; i <= s->n; i++)
+		{
+			lua_pushnumber(L,i);
+			lua_pushSig(L,p->obj);
+			lua_settable(L,-3);
+			p = p->next;
+		}
+
+	lua_setglobal(L,"sensor");
+	return 0;
+}
+
+int lua_pushVec3(lua_State *L, Vector3 vec);
+int lua_pushSig(lua_State *L, Signal sig)
+{
+	lua_newtable(L);
+		lua_pushstring(L,"l");
+		lua_pushVec3(L,sig.l);
+	  lua_settable(L,-3);
+		lua_pushstring(L,"dF");
+		lua_pushVec3(L,sig.dF);
+	  lua_settable(L,-3);
+		lua_pushstring(L,"dU");
+		lua_pushVec3(L,sig.dU);
+	  lua_settable(L,-3);
+	return 0;
+}
+int lua_pushVec3(lua_State *L, Vector3 vec)
+{
+	lua_newtable(L);
+		lua_pushstring(L,"x");
+		lua_pushnumber(L,vec.x);
+	  lua_settable(L,-3);
+		lua_pushstring(L,"y");
+		lua_pushnumber(L,vec.y);
+	  lua_settable(L,-3);
+		lua_pushstring(L,"z");
+		lua_pushnumber(L,vec.z);
+	  lua_settable(L,-3);
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////
 int LuaController::step()
 {
+	lua_settop(L,0);
+	pushSensor();
+
 	// call lua step
 	//printf("Controller step\n");
-	lua_settop(L,0);
 	lua_getglobal(L,"step"); // stack 1 is the function
 	if (lua_pcall(L,0,0,0) != 0)    // one para, one return
 		{printf("call step func fail %s\n",lua_tostring(L,-1)); return -1;}

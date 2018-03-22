@@ -4,19 +4,19 @@
 
 List::List()
 {
-	printf("list construct %d\n",this);
+	//printf("list construct %d\n",this);
 	head = (struct node*)malloc(sizeof(struct node));
 	head->next = NULL;
 }
 List::~List()
 {
-	printf("list desstruct %d\n",this);
+	//printf("list desstruct %d\n",this);
 	freelist();
 }
 
 int List::freelist()
 {
-	printf("free list\n");
+	//printf("free list\n");
 	struct node *p;
 	while (head != NULL)
 	{
