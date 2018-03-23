@@ -195,10 +195,13 @@ int lua_pushVec3(lua_State *L, Vector3 vec)
 }
 
 /////////////////////////////////////////////////////////////
-int LuaController::step()
+int LuaController::step(double time)
 {
 	lua_settop(L,0);
 	pushSensor();
+
+	lua_pushnumber(L,time);
+	lua_setglobal(L,"steptime");
 
 	// call lua step
 	//printf("Controller step\n");

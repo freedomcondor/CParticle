@@ -39,46 +39,39 @@ int function_exit()
 
 //DirParticle a(0,0,0);
 //DirParticle a(0,0,0,
-Robot a;
-Box b;
-Sensor c;
+#define N_ROBOTS 50
+Robot robots[N_ROBOTS];
+int n_robots = N_ROBOTS;
 
 int function_init()
 {
-	printf("i am init of main\n");
-	a.set(0,0,0,
-				1,1,0,
-				0,0,1);
-	//a.ctrlInit();
-
-	b.set(0.1,0,0,
-				0,1,0,
-				0,0,1);
-	//b.ctrlInit();
-	a.sensor.sense(b);
-	b.sensor.sense(a);
-
-	c.set(0,-1,0,
-			   0,1,0,
-			   0,0,1);
-
-	c.sense(a);
-	c.sense(b);
+	for (int i = 0; i < n_robots; i++)
+	{
+		robots[i].set(	0,0,0,
+						1,1,0,
+						0,0,1);
+	}
 
 	return 0;
 }
 
 int function_step(double time)	// time in ms
 {
-	//a.setspeed(CH2);
-	//a.setarm(CH2 * 180 / 3.1415926535898);
-	a.setturn(CH1 * 180 / 3.1415926535898);
-	a.run(time/1000);
-	b.run(time/1000);
-	//clock_t start_t, end_t;
-	//start_t = clock();
-	//end_t = clock();
-	//printf("step time: %lf\n",double(end_t - start_t)*1000/CLOCKS_PER_SEC);
+	for (int i = 0; i < n_robots-1; i++)
+		for (int j = i+1; j < n_robots; j++)
+		{
+			robots[i].sensor.sense(robots[j]);
+			robots[j].sensor.sense(robots[i]);
+		}
+	for (int i = 0; i < n_robots; i++)
+		robots[i].run(time/1000);
+
+	/*
+	clock_t start_t, end_t;
+	start_t = clock();
+	end_t = clock();
+	printf("step time: %lf\n",double(end_t - start_t)*1000/CLOCKS_PER_SEC);
+	*/
 	return 0;
 }
 
@@ -87,17 +80,8 @@ int drawRobot(const Robot& r);
 int drawBox(const Box& r);
 int function_draw()
 {
-	/*
-	drawSphere(a.l.x, a.l.y, a.l.z, 0.02);
-	drawCylinder(	0.01,0.01,0.05,
-					a.l.x, a.l.y, a.l.z,
-					a.dF.x, a.dF.y, a.dF.z );
-	drawCylinder(	0.01,0.01,0.05,
-					a.l.x, a.l.y, a.l.z,
-					a.dU.x, a.dU.y, a.dU.z );
-	*/
-	drawRobot(a);
-	drawBox(b);
+	for (int i = 0; i < n_robots; i++)
+		drawRobot(robots[i]);
 
 	return 0;
 }

@@ -221,5 +221,8 @@ int Sensor::addSig(const Signal& s)
 
 bool Sensor::rangecheck(const Signal& x)
 {
-	return true;
+	if (x.l.len() < 0.5)
+		return true;
+	else
+		return false;
 }

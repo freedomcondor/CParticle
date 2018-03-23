@@ -13,7 +13,7 @@ public:
 	int pushSensor();
 
 	int init(int *r);
-	int step();
+	int step(double time);
 	int exit();
 };
 

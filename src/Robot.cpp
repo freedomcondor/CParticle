@@ -115,7 +115,7 @@ int Robot::sensorUpdate()
 //////////////////////////////////////////////////////////////////
 int Robot::run(double time)
 {
-	ctrl.step();
+	ctrl.step(time);
 	setv(dF.nor() * speed);
 
 	DirParticle::run(time);

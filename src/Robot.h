@@ -51,7 +51,7 @@ public:
 				const Vector3& _y,
 				const Vector3& _z);
 
-	int run(double time);
+	int run(double time);	// in s
 	int setspeed(double x);
 	int setturn(double x);	// in degree
 	int setarm(double x);	// in degree  0-90

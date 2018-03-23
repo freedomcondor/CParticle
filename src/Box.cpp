@@ -89,7 +89,7 @@ int Box::ctrlInit()
 //////////////////////////////////////////////////////////////////
 int Box::run(double time)
 {
-	ctrl.step();
+	ctrl.step(time);
 	sensorUpdate();
 	setv(dF.nor() * v.len());
 
