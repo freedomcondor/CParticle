@@ -6,6 +6,7 @@
 
 class Robot;
 class Box;
+class Wall;
 
 class Signal
 {
@@ -17,6 +18,7 @@ public:
 	const int* obj;	// a pointer, may be Robot or Box
 	int copy(const Robot& x);
 	int copy(const Box& x);
+	int copy(const Wall& x, const Vector3& _x,const Vector3& _y,const Vector3& _z);
 	int copy(const Robot& x, double len);
 	int copy(const Box& x, double len);
 	int turn(const Vector3& _x,const Vector3& _y,const Vector3& _z);

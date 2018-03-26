@@ -1,6 +1,7 @@
 #include "Sensor.h"
 #include "Robot.h"	// for copy
 #include "Box.h"
+#include "Wall.h"
 
 #define PI 3.1415926535898
 #define DOUBLE_ERR 0.0000001
@@ -123,6 +124,15 @@ int Signal::copy(const Robot& x)
 	return 0;
 }
 
+int Signal::copy(const Wall& x, const Vector3& _x,const Vector3& _y,const Vector3& _z)
+	// _x,_y,_z is the location and direction of the sensor
+{
+	type = SIGWALL;
+	obj = (int*)&x;
+	x.makesignal(_x,_y,_z,&l,&dF,&dU,&distance);
+	return 0;
+}
+
 int Signal::copy(const Robot& x, double len)
 {
 	copy(x);
@@ -169,6 +179,14 @@ int Sensor::sense(const Robot& x)
 	addSig(s);
 	return 0;
 }
+int Sensor::sense(const Wall& x)
+{
+	Signal s;
+	s.copy(x,l,dF,dU);
+	s.turn(l,dF,dU);
+	addSig(s);
+	return 0;
+}
 
 int Sensor::addSig(const Signal& s)
 {
@@ -182,7 +200,7 @@ int Sensor::addSig(const Signal& s)
 	{
 		if ( (q->next->obj).obj == s.obj  )	// check if it is the same obj
 		{
-			if (!rangecheck(s))
+			if ( 	!rangecheck(s) )
 			{
 				// delete
 				p = q->next;
@@ -198,7 +216,7 @@ int Sensor::addSig(const Signal& s)
 	}
 
 	// to insert
-	if (!rangecheck(s))
+	if (	!rangecheck(s) )
 		return 0;
 
 	double len = s.l.len();
@@ -221,8 +239,12 @@ int Sensor::addSig(const Signal& s)
 
 bool Sensor::rangecheck(const Signal& x)
 {
-	if (x.l.len() < 0.5)
+	if (x.l.len() < 0.1)
+	{
+		if (  (x.type == SIGBOX) && ( ((Box*)(x.obj))->beingcarried == 1) )
+			return false;
 		return true;
+	}
 	else
 		return false;
 }

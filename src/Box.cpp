@@ -75,6 +75,8 @@ int Box::set(	const Vector3& _x,
 int Box::commonInit()
 {
 	size = 0.1;
+	beingcarried = 0;
+	fixed = 0;
 	ctrl.init((int *)this);
 
 	return 0;

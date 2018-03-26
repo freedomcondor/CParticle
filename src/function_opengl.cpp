@@ -7,6 +7,7 @@
 #include "DirParticle.h"
 #include"Robot.h"
 #include"Box.h"
+#include"Wall.h"
 #include"Sensor.h"
 
 //#define LISTNODETYPE Signal
@@ -37,11 +38,13 @@ int function_exit()
 	return 0;
 }
 
-//DirParticle a(0,0,0);
-//DirParticle a(0,0,0,
 #define N_ROBOTS 50
+#define N_BOXES 50
 Robot robots[N_ROBOTS];
 int n_robots = N_ROBOTS;
+Box box[N_ROBOTS];
+int n_boxes = N_BOXES;
+Wall thewall;
 
 int function_init()
 {
@@ -51,6 +54,15 @@ int function_init()
 						1,1,0,
 						0,0,1);
 	}
+
+	for (int i = 0; i < n_robots; i++)
+	{
+		box[i].set(	1,0,0,
+					1,0,0,
+					0,0,1);
+	}
+
+	//robots[0].tocarry(&box);
 
 	return 0;
 }
@@ -63,6 +75,12 @@ int function_step(double time)	// time in ms
 			robots[i].sensor.sense(robots[j]);
 			robots[j].sensor.sense(robots[i]);
 		}
+	for (int i = 0; i < n_robots; i++)
+	{
+		robots[i].sensor.sense(thewall);
+		for (int j = 0; j < n_boxes; j++)
+			robots[i].sensor.sense(box[j]);
+	}
 	for (int i = 0; i < n_robots; i++)
 		robots[i].run(time/1000);
 
@@ -82,6 +100,8 @@ int function_draw()
 {
 	for (int i = 0; i < n_robots; i++)
 		drawRobot(robots[i]);
+	for (int i = 0; i < n_boxes; i++)
+		drawBox(box[i]);
 
 	return 0;
 }
@@ -117,9 +137,14 @@ int drawRobot(const Robot& r)
 			 			r.dF.x, r.dF.y, r.dF.z,
 			 			r.dU.x, r.dU.y, r.dU.z);
 
-	drawCylinder(r.size/8, r.size/8, r.size/2,
+	drawCylinder(r.size/10, r.size/10, r.size/2,
 			 			r.l.x, r.l.y, r.l.z,
 			 			r.armVec.x, r.armVec.y, r.armVec.z);
+
+	drawCylinder(r.size/10, r.size/10, r.size/3,
+			 			r.l.x, r.l.y, r.l.z,
+			 			r.dF.x, r.dF.y, r.dF.z);
+
 	return 0;
 }
 int drawBox(const Box& r)

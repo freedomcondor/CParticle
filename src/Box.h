@@ -9,6 +9,8 @@ class Box	: public DirParticle
 {
 public:
 	double size;
+	int beingcarried;
+	int fixed;
 
 	BoxController ctrl;
 	int ctrlInit();	

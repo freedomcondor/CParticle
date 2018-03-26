@@ -8,9 +8,11 @@
 #define MAXSENSE 50
 #define SIGROBOT 0
 #define SIGBOX 1
+#define SIGWALL 2
 
 class Robot;
 class Box;
+class Wall;
 
 class Sensor : public DirParticle
 {
@@ -35,6 +37,7 @@ public:
 
 	int sense(const Robot& x);
 	int sense(const Box& x);
+	int sense(const Wall& x);
 	int addSig(const Signal& s);
 	bool rangecheck(const Signal& x);
 	//int sense(const Box& x);

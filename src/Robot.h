@@ -4,20 +4,28 @@
 #include "DirParticle.h"
 #include "LuaController.h"
 #include "Sensor.h"
+#include "Box.h"
 
 class Robot	: public DirParticle
 {
 public:
-	//double speed = 0;	// the speed toward front(dirFront or dF)
 	double speed;	// the speed toward front(dirFront or dF)
-	//double arm = 0;		// in degree
+			//double speed = 0;	// the speed toward front(dirFront or dF)
 	double arm;		// in degree
+			//double arm = 0;		// in degree
 	Vector3 armVec;
-	//double size = 0.1;
 	double size;
-	//double armLen = size;
+			//double size = 0.1;
 	double armLen;
+			//double armLen = size;
 	int armUpdate();	// also update sensor
+
+	Box *carrying;
+	int tocarry(Box *b);
+	int tounload(
+				double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r);
 
 	RobotController ctrl;
 	int ctrlInit();	

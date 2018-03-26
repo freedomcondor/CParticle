@@ -79,7 +79,7 @@ float RotateStep = 0.500f, ScaleStep = 0.05, MoveStep = 0.03;
 #define TIMESTEP
 //#ifdef TIMESTEP
 int FrameTime = 30;	// draw frequency
-int StepTime = 50;		// step frequency
+int StepTime = 30;		// step frequency
 //#endif
 
 int PAUSE = 1;

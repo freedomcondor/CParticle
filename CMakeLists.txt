@@ -65,6 +65,7 @@ add_executable(main src/debug_opengl.cpp
 					src/Robot.cpp
 					src/Box.cpp
 					src/Sensor.cpp
+					src/Wall.cpp
 					src/LuaController.cpp
 					src/List/List.cpp
 			  )

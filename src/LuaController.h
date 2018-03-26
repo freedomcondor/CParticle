@@ -23,6 +23,7 @@ public:
 	int* robot;
 	RobotController();
 	int init(int *r);
+	int step(double time);
 };
 
 class BoxController : public LuaController

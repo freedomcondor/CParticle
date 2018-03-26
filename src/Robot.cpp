@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include "Box.h"
 #include "DirParticle.h"
 
 #define PI 3.1415926535898
@@ -81,7 +82,8 @@ int Robot::commonInit()
 	speed = 0;	// the speed toward front(dirFront or dF)
 	arm = 0;		// in degree
 	size = 0.1;
-	armLen = size;
+	armLen = size/2;
+	carrying = NULL;
 
 	ctrl.init((int *)this);
 	armUpdate();
@@ -121,6 +123,11 @@ int Robot::run(double time)
 	DirParticle::run(time);
 	armUpdate();
 	sensorUpdate();
+	if (carrying != NULL)
+	{
+		carrying->set(l+armVec,dF,dU);
+		carrying->beingcarried = 1;
+	}
 
 	return 0;
 }
@@ -137,5 +144,30 @@ int Robot::setturn(double x)	// x in degree
 int Robot::setarm(double x)
 {
 	arm = x;
+	return 0;
+}
+
+int Robot::tocarry(Box *b)
+{
+	carrying = b;
+	b->set(l+armVec,dF,dU);
+	b->beingcarried = 1;
+	return 0;
+}
+
+int Robot::tounload(
+				double x,double y,double z,
+				double a,double b,double c,
+				double p,double q,double r)
+{
+	if (carrying != NULL)
+	{
+		carrying->set(x + l.x, y + l.y, z + l.z,
+					a,b,c,p,q,r);
+		carrying->beingcarried = 0;
+		carrying->fixed = 1;
+	}
+	carrying = NULL;
+
 	return 0;
 }

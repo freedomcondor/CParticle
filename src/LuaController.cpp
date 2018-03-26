@@ -24,12 +24,35 @@ int setarm(lua_State* L)
 	robot->setarm(x);
 	return 0;
 }
+int tocarry(lua_State* L)
+{
+	Robot* robot = (Robot*)lua_touserdata(L,-2);
+	Box* b = (Box*)lua_touserdata(L,-1);
+	robot->tocarry(b);
+	return 0;
+}
+
+int tounload(lua_State* L)
+{
+	Robot* robot = (Robot*)lua_touserdata(L,-10);
+	//Box* box = (Box*)lua_touserdata(L,-10);
+	double x,y,z,a,b,c,p,q,r;
+	x = lua_tonumber(L,-9);	y = lua_tonumber(L,-8); z = lua_tonumber(L,-7);
+	a = lua_tonumber(L,-6);	b = lua_tonumber(L,-5); c = lua_tonumber(L,-4);
+	p = lua_tonumber(L,-3);	q = lua_tonumber(L,-2); r = lua_tonumber(L,-1);
+	if (robot->carrying != NULL)
+		//robot->tounload(robot->carrying,x,y,z,a,b,c,p,q,r);
+		robot->tounload(x,y,z,a,b,c,p,q,r);
+	return 0;
+}
 
 static const luaL_Reg clib_robot[] = 
 {
 	{"setspeed",setspeed},
 	{"setturn",setturn},
 	{"setarm",setarm},
+	{"tocarry",tocarry},
+	{"tounload",tounload},
 	{NULL,NULL},
 };
 
@@ -168,6 +191,23 @@ int lua_pushVec3(lua_State *L, Vector3 vec);
 int lua_pushSig(lua_State *L, Signal sig)
 {
 	lua_newtable(L);
+		lua_pushstring(L,"type");
+		lua_pushnumber(L,sig.type);
+	  lua_settable(L,-3);
+		lua_pushstring(L,"obj");
+		lua_pushlightuserdata(L,(void*)(sig.obj));
+	  lua_settable(L,-3);
+
+		if (sig.type == SIGBOX)
+		{
+			lua_pushstring(L,"fixed");
+			if ( ((Box*)(sig.obj))->fixed == 1  )
+				lua_pushboolean(L,true);
+			else
+				lua_pushboolean(L,false);
+	  		lua_settable(L,-3);
+		}
+
 		lua_pushstring(L,"l");
 		lua_pushVec3(L,sig.l);
 	  lua_settable(L,-3);
@@ -195,9 +235,20 @@ int lua_pushVec3(lua_State *L, Vector3 vec)
 }
 
 /////////////////////////////////////////////////////////////
-int LuaController::step(double time)
+int RobotController::step(double time)
 {
 	lua_settop(L,0);
+	if ( ((Robot *)robot)->carrying == NULL)
+		lua_pushboolean(L,false);
+	else
+		lua_pushboolean(L,true);
+	lua_setglobal(L,"carrying");
+
+	LuaController::step(time);
+}
+int LuaController::step(double time)
+{
+	//lua_settop(L,0);
 	pushSensor();
 
 	lua_pushnumber(L,time);
