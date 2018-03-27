@@ -78,6 +78,9 @@ int Box::commonInit()
 	beingcarried = 0;
 	fixed = 0;
 	ctrl.init((int *)this);
+	for (int i = 0; i < 5; i++)
+		unsetstig(i);
+	stign = 0;
 
 	return 0;
 }
@@ -93,21 +96,27 @@ int Box::run(double time)
 {
 	ctrl.step(time);
 	sensorUpdate();
-	setv(dF.nor() * v.len());
 
 	DirParticle::run(time);
 
 	return 0;
 }
 
-int Box::setspeed(double x)
-{
-	setv(dF.nor() * x);
-	return 0;
-}
-
 int Box::sensorUpdate()
 {
 	sensor.set(l,dF,dU);
+	return 0;
+}
+
+int Box::setstig(int x)
+{
+	stig[x] = 1;
+	stign++;
+	return 0;
+}
+int Box::unsetstig(int x)
+{
+	stig[x] = 0;
+	stign--;
 	return 0;
 }

@@ -32,6 +32,7 @@ public:
 	int* box;
 	BoxController();
 	int init(int *r);
+	int step(double time);
 };
 
 #endif

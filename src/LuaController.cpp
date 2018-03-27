@@ -102,16 +102,24 @@ int RobotController::init(int* r)
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-int setboxspeed(lua_State* L)
+int setstig(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
 	double x = lua_tonumber(L,-1);
-	box->setspeed(x);
+	box->setstig(x);
+	return 0;
+}
+int unsetstig(lua_State* L)
+{
+	Box* box = (Box*)lua_touserdata(L,-2);
+	double x = lua_tonumber(L,-1);
+	box->unsetstig(x);
 	return 0;
 }
 static const luaL_Reg clib_box[] = 
 {
-	{"setspeed",setboxspeed},
+	{"setstig",setstig},
+	{"unsetstig",unsetstig},
 	{NULL,NULL},
 };
 
@@ -188,6 +196,7 @@ int LuaController::pushSensor()
 }
 
 int lua_pushVec3(lua_State *L, Vector3 vec);
+int lua_pushstig(lua_State *L, Box *box);
 int lua_pushSig(lua_State *L, Signal sig)
 {
 	lua_newtable(L);
@@ -206,6 +215,13 @@ int lua_pushSig(lua_State *L, Signal sig)
 			else
 				lua_pushboolean(L,false);
 	  		lua_settable(L,-3);
+
+			if ( ((Box*)(sig.obj))->fixed == 1  )
+			{
+				lua_pushstring(L,"stig");
+				lua_pushstig(L,(Box*)(sig.obj));
+	  			lua_settable(L,-3);
+			}
 		}
 
 		lua_pushstring(L,"l");
@@ -219,6 +235,20 @@ int lua_pushSig(lua_State *L, Signal sig)
 	  lua_settable(L,-3);
 	return 0;
 }
+int lua_pushstig(lua_State *L, Box *box)
+{
+	lua_newtable(L);
+	for (int i = 0; i < 6; i++)
+	{
+		lua_pushnumber(L,i+1);
+		lua_pushnumber(L,box->stig[i]);
+	  	lua_settable(L,-3);
+	}
+	lua_pushstring(L,"n");
+	lua_pushnumber(L,box->stign);
+	lua_settable(L,-3);
+}
+
 int lua_pushVec3(lua_State *L, Vector3 vec)
 {
 	lua_newtable(L);
@@ -235,6 +265,17 @@ int lua_pushVec3(lua_State *L, Vector3 vec)
 }
 
 /////////////////////////////////////////////////////////////
+int BoxController::step(double time)
+{
+	lua_settop(L,0);
+	if ( ((Box *)box)->beingcarried == 0)
+		lua_pushboolean(L,false);
+	else
+		lua_pushboolean(L,true);
+	lua_setglobal(L,"beingcarried");
+	LuaController::step(time);
+}
+
 int RobotController::step(double time)
 {
 	lua_settop(L,0);

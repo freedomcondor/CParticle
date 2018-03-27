@@ -118,8 +118,8 @@ int Robot::sensorUpdate()
 int Robot::run(double time)
 {
 	ctrl.step(time);
-	setv(dF.nor() * speed);
 
+	setv(dF.nor() * speed);
 	DirParticle::run(time);
 	armUpdate();
 	sensorUpdate();
@@ -162,8 +162,14 @@ int Robot::tounload(
 {
 	if (carrying != NULL)
 	{
-		carrying->set(x + l.x, y + l.y, z + l.z,
-					a,b,c,p,q,r);
+		Quaternion qua;
+		qua.setFrom4Vecs(Vector3(1,0,0),Vector3(0,0,1),
+						dF,dU	);
+
+		Vector3 _l = l + qua.toRotate(Vector3(x,y,z));
+		Vector3 _dF = qua.toRotate(Vector3(a,b,c));
+		Vector3 _dU = qua.toRotate(Vector3(p,q,r));
+		carrying->set(_l, _dF, _dU);
 		carrying->beingcarried = 0;
 		carrying->fixed = 1;
 	}

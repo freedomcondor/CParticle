@@ -39,10 +39,10 @@ int function_exit()
 }
 
 #define N_ROBOTS 50
-#define N_BOXES 50
+#define N_BOXES 1
 Robot robots[N_ROBOTS];
 int n_robots = N_ROBOTS;
-Box box[N_ROBOTS];
+Box box[N_BOXES];
 int n_boxes = N_BOXES;
 Wall thewall;
 
@@ -55,7 +55,7 @@ int function_init()
 						0,0,1);
 	}
 
-	for (int i = 0; i < n_robots; i++)
+	for (int i = 0; i < n_boxes; i++)
 	{
 		box[i].set(	1,0,0,
 					1,0,0,
@@ -83,6 +83,8 @@ int function_step(double time)	// time in ms
 	}
 	for (int i = 0; i < n_robots; i++)
 		robots[i].run(time/1000);
+	for (int i = 0; i < n_boxes; i++)
+		box[i].run(time/1000);
 
 	/*
 	clock_t start_t, end_t;

@@ -1,11 +1,18 @@
 
+
+--[[
+  global:
+  	box: xxx
+
+--]]
 function init()
 	--print("box lua init",box)
-	box:setspeed(1);
 end
 
 function step()
 	--print("box lua step",box)
+	--print("boxbeing carried",beingcarried)
+	--[[
 	print("box n = ",sensor.n);
 	for i = 1 , sensor.n do
 		print("sensor",i,"l = ",sensor[i].l.x,
@@ -18,6 +25,7 @@ function step()
 								sensor[i].dU.y,
 								sensor[i].dU.z);
 	end
+	--]]
 	--box:setturn(-40);
 end
 

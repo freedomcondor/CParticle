@@ -3,6 +3,25 @@ luaExt = '?.lua'
 package.path = package.path .. luaPath_src .. "Lua/" .. luaExt
 local State = require("State")
 
+--[[
+ global varible:
+ 	robot:	setspeed(x)
+			setturn
+			setarm
+			tocarry
+
+	sensor.n
+	sensor[i] = {
+		l,dF,dU
+		type = 0/1/2  (ROBOT/BOX/WALL)
+		obj = pointer to the in C++
+		if a box:
+		fixed = true/false
+		if fixed == true
+		stig = {n,1,2,3,4,5,6}
+	}
+--]]
+
 local ROBOT = 0
 local BOX = 1
 local WALL = 2
@@ -21,21 +40,31 @@ local movestate = State:create
 	data = {turncount = 0,
 			armcount = 0,
 			armspeed = 90 * 10,
+			unloadsig = nil,
 	},
 	substates = {
 		random = {method = 
 			function(_currentstate,father) 
 				for i = 1, sensor.n do
-					if frontcheck(sensor[i]) == true and sensor[i].type == BOX and	-- 1 box
-					   carrying == false and sensor[i].fixed == false then
-						--print("carry");
-						robot:tocarry(sensor[i].obj)
-						return "armup"
+					if frontcheck(sensor[i]) == true and sensor[i].type == ROBOT then	-- 0 box
+						--return "turnback"
+					end
+					if frontcheck(sensor[i]) == true and sensor[i].type == BOX then	-- 1 box
+						if carrying == false and sensor[i].fixed == false then	-- if can carry
+							--print("carry");
+							robot:tocarry(sensor[i].obj)
+							return "armup"
+						else
+							print("stig",sensor[i].stig.n)
+							return "turnback"
+						end
 					end
 					if frontcheck(sensor[i]) == true and sensor[i].type == WALL then	-- 2 wall
 						--print("touchwall");
 						if carrying == true then
 							print("armdown");
+							father.data.unloadsig = sensor[i]
+							robot:setspeed(0) robot:setturn(0)
 							return "armdown"
 						else
 							return "turnback"
@@ -101,7 +130,10 @@ local movestate = State:create
 				father.data.armcount = father.data.armcount - armL
 				if father.data.armcount < 0 then
 					robot:setarm(0)
-					robot:tounload(0,0,0,1,0,0,0,0,1)
+					local sig = father.data.unloadsig
+					robot:tounload(	sig.l.x,sig.l.y,sig.l.z,
+									sig.dF.x,sig.dF.y,sig.dF.z,
+									sig.dU.x,sig.dU.y,sig.dU.z)
 					return "random"
 				end
 				robot:setarm(father.data.armcount)
@@ -113,6 +145,8 @@ local movestate = State:create
 	transitions = {},
 }
 
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
 function init()
 	--print("robot lua init",robot)
 	robot:setspeed(1)

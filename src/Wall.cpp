@@ -11,7 +11,7 @@ int Wall::makesignal(
 		*l = Vector3(range,0,0);
 	l->z = _l.z;
 	
-	*dF = Vector3(1,0,0);
+	*dF = Vector3(-_l.x,-_l.y,0).nor();
 	*dU = Vector3(0,0,1);
 
 	*dis = range - Vector3(_l.x,_l.y,0).len();
