@@ -39,7 +39,7 @@ int function_exit()
 }
 
 #define N_ROBOTS 50
-#define N_BOXES 1
+#define N_BOXES 100
 Robot robots[N_ROBOTS];
 int n_robots = N_ROBOTS;
 Box box[N_BOXES];
@@ -57,7 +57,7 @@ int function_init()
 
 	for (int i = 0; i < n_boxes; i++)
 	{
-		box[i].set(	1,0,0,
+		box[i].set(	0.2,0,0,
 					1,0,0,
 					0,0,1);
 	}

@@ -24,6 +24,7 @@ int List::freelist()
 		delete(head);
 		head = p;
 	}
+	return 0;
 }
 
 int List::add(nodetype x, int i)

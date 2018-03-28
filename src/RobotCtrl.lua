@@ -54,10 +54,14 @@ local movestate = State:create
 							--print("carry");
 							robot:tocarry(sensor[i].obj)
 							return "armup"
-						else
+						else if carrying == false and sensor[i].fixed == true then
 							print("stig",sensor[i].stig.n)
+							-- just go away
 							return "turnback"
-						end
+						else if carrying == true and sensor[i].fixed == true then
+							-- see if I can unload
+							return "turnback"
+						end end end
 					end
 					if frontcheck(sensor[i]) == true and sensor[i].type == WALL then	-- 2 wall
 						--print("touchwall");
