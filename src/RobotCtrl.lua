@@ -2,6 +2,7 @@ luaPath_src = ';../src/'
 luaExt = '?.lua'
 package.path = package.path .. luaPath_src .. "Lua/" .. luaExt
 local State = require("State")
+local Vec3 = require("Vector3")
 
 --[[
  global varible:
@@ -16,9 +17,11 @@ local State = require("State")
 		type = 0/1/2  (ROBOT/BOX/WALL)
 		obj = pointer to the in C++
 		if a box:
+		size
 		fixed = true/false
 		if fixed == true
 		stig = {n,1,2,3,4,5,6}
+			stig[1] = true or false
 	}
 --]]
 
@@ -26,12 +29,40 @@ local ROBOT = 0
 local BOX = 1
 local WALL = 2
 
+local FRONT = 1
+local LEFT = 2
+local UP = 3
+local DOWN = 4
+local RIGHT = 5
+local BACK = 6
+
+local boxsize = 0.1
+
 local frontcheck = function(sig)
 	if sig.l.x > 0 then
 		return true
 	else
 		return false
 	end
+end
+
+local getStigVector = function(x,_dF,_dU)
+	-- x == 1 ~ 6 which is FRONT/BACK/...
+	dF = Vec3:create(_dF.x,_dF.y,_dF.z)
+	dU = Vec3:create(_dU.x,_dU.y,_dU.z)
+	if x == FRONT then
+		return dF:nor() * boxsize
+	else if x == BACK then
+		return -dF:nor() * boxsize
+	else if x == UP then
+		return dU:nor() * boxsize
+	else if x == DOWN then
+		return -dU:nor() * boxsize
+	else if x == LEFT then
+		return (dU * dF):nor() * boxsize
+	else if x == RIGHT then
+		return (dF * dU):nor() * boxsize
+	end end end end end end
 end
 
 local movestate = State:create
@@ -55,11 +86,25 @@ local movestate = State:create
 							robot:tocarry(sensor[i].obj)
 							return "armup"
 						else if carrying == false and sensor[i].fixed == true then
-							print("stig",sensor[i].stig.n)
 							-- just go away
 							return "turnback"
 						else if carrying == true and sensor[i].fixed == true then
+							print("-------------stig",sensor[i].stig.n)
 							-- see if I can unload
+							for j = 1, 6 do
+								if sensor[i].stig[j] == true then
+									print("-----------stig",j)
+									local usig = sensor[i]
+									local stigvec = getStigVector(j,usig.dF,usig.dU)
+									if stigvec.x < 0 then	-- unload direction check
+										usig.l = Vec3:create(usig.l.x,usig.l.y,usig.l.z)
+										usig.l = usig.l + stigvec 
+										father.data.unloadsig = usig
+										robot:setspeed(0) robot:setturn(0)
+										return "armdown"
+									end
+								end
+							end
 							return "turnback"
 						end end end
 					end

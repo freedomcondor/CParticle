@@ -1,6 +1,7 @@
 #include<math.h>
 #include<stdio.h>	// for printf
 #include<time.h>  // for time measuring
+#include<string.h>  // for strcmp
 
 #include"function_opengl.h"
 #include"CVector/Vector3.h"
@@ -38,8 +39,8 @@ int function_exit()
 	return 0;
 }
 
-#define N_ROBOTS 50
-#define N_BOXES 100
+#define N_ROBOTS 1
+#define N_BOXES 2
 Robot robots[N_ROBOTS];
 int n_robots = N_ROBOTS;
 Box box[N_BOXES];
@@ -55,7 +56,16 @@ int function_init()
 						0,0,1);
 	}
 
-	for (int i = 0; i < n_boxes; i++)
+		box[0].set(	-1,0,0,
+					1,0,0,
+					0,0,1);
+		box[0].setstig(FRONT);
+		box[0].setstig(LEFT);
+		box[0].setstig(RIGHT);
+		box[0].setstig(DOWN);
+		box[0].fixed = 1;
+
+	for (int i = 1; i < n_boxes; i++)
 	{
 		box[i].set(	0.2,0,0,
 					1,0,0,
@@ -154,6 +164,19 @@ int drawBox(const Box& r)
 	drawCube(r.size/2, 	r.l.x,  r.l.y,  r.l.z,
 			 			r.dF.x, r.dF.y, r.dF.z,
 			 			r.dU.x, r.dU.y, r.dU.z);
+
+	int drawStig = 1;
+	if (drawStig == 1)
+		for (int i = 0; i < 6; i++)
+			if (r.stig[i] == 1)
+			{
+				Vector3 t = r.getStigVector(i);
+				t += r.l;
+				drawCube(r.size/2, 	t.x,  	t.y,  	t.z,
+			 						r.dF.x, r.dF.y, r.dF.z,
+			 						r.dU.x, r.dU.y, r.dU.z, "wire");
+			}
+
 	return 0;
 }
 
@@ -171,6 +194,13 @@ int drawSphere(double x, double y, double z, double r)
 int drawCube(double half, double x, double y, double z, 
 						  double fx,double fy,double fz,
 						  double ux,double uy,double uz)
+{
+	drawCube(half,x,y,z,fx,fy,fz,ux,uy,uz,"0");
+}
+
+int drawCube(double half, double x, double y, double z, 
+						  double fx,double fy,double fz,
+						  double ux,double uy,double uz, char command[])
 	// f is front, u is up
 {
 	double xaxis,yaxis,zaxis,axis,angleaxis;
@@ -192,7 +222,7 @@ int drawCube(double half, double x, double y, double z,
 		rotateflag = 0;
 	if ((fx == 1) && (fy == 0) && (fz == 0))
 	{
-		drawCube(half, x,y,z,  ux,uy,uz,  fx,fy,fz);
+		drawCube(half, x,y,z,  ux,uy,uz,  fx,fy,fz, command);
 		return 0;
 	}
 
@@ -254,7 +284,12 @@ int drawCube(double half, double x, double y, double z,
 	glTranslatef(x,y,z);
 	if (rotateflag == 1)
 		glRotatef(angleaxis*180/pi,xaxis,yaxis,zaxis);
-	glutSolidCube(half);
+
+	if (strcmp(command,"wire") == 0)
+		glutWireCube(half);
+	else
+		glutSolidCube(half);
+
 	if (rotateflag == 1)
 		glRotatef(-angleaxis*180/pi,xaxis,yaxis,zaxis);
 	glTranslatef(-x,-y,-z);

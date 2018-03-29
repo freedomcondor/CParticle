@@ -71,7 +71,7 @@ int Box::set(	const Vector3& _x,
 	return 0;
 }
 
-//////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 int Box::commonInit()
 {
 	size = 0.1;
@@ -91,7 +91,7 @@ int Box::ctrlInit()
 	return 0;
 }
 
-//////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 int Box::run(double time)
 {
 	ctrl.step(time);
@@ -108,7 +108,7 @@ int Box::sensorUpdate()
 	return 0;
 }
 
-int Box::setstig(int x)
+int Box::setstig(int x)	// FRONT, LEFT, BACK ...
 {
 	stig[x] = 1;
 	stign++;
@@ -119,4 +119,22 @@ int Box::unsetstig(int x)
 	stig[x] = 0;
 	stign--;
 	return 0;
+}
+
+Vector3 Box::getStigVector(int x) const	//x is FRONT/BACK/...
+{
+	if (x == FRONT)
+		return dF.nor() * size;
+	else if (x == BACK)
+		return -dF.nor() * size;
+	else if (x == UP)
+		return dU.nor() * size;
+	else if (x == DOWN)
+		return -dU.nor() * size;
+	else if (x == LEFT)
+		return (dU * dF).nor() * size;
+	else if (x == RIGHT)
+		return (dF * dU).nor() * size;
+	else
+		return Vector3(0,0,0);
 }

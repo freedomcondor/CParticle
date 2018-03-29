@@ -11,12 +11,16 @@ extern double CH2,CH2_MAX,CH2_MIN,CH2_STEP;
 
 ///////////////////  drawings /////////////////
 int drawSphere(double x, double y, double z, double r);
-int drawCube(double half, double x, double y, double z,
-						  double ex,double ey,double ez);
+//int drawCube(double half, double x, double y, double z,
+//						  double ex,double ey,double ez);
 
 int drawCube(double half, double x, double y, double z, 
 						  double fx,double fy,double fz,
 						  double ux,double uy,double uz);
+
+int drawCube(double half, double x, double y, double z, 
+						  double fx,double fy,double fz,
+						  double ux,double uy,double uz, char command[]);
 
 int drawCylinder(	double base, double top, double height,
 				double lx,	double ly, double lz,

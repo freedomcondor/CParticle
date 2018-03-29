@@ -21,6 +21,8 @@ public:
 	int stign;
 	int stig[6];
 
+	Vector3 getStigVector(int x) const;	//x is FRONT/BACK/...
+
 	BoxController ctrl;
 	int ctrlInit();	
 		// in have to call this in main,(like a.ctrlInit) after construct

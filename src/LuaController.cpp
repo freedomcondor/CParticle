@@ -241,7 +241,10 @@ int lua_pushstig(lua_State *L, Box *box)
 	for (int i = 0; i < 6; i++)
 	{
 		lua_pushnumber(L,i+1);
-		lua_pushnumber(L,box->stig[i]);
+		if ( box->stig[i] == 1  )
+			lua_pushboolean(L,true);
+		else
+			lua_pushboolean(L,false);
 	  	lua_settable(L,-3);
 	}
 	lua_pushstring(L,"n");
