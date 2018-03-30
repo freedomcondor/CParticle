@@ -94,20 +94,22 @@ local movestate = State:create
 							-- just go away
 							return "turnback"
 						else if carrying == true and sensor[i].fixed == true then
-							print("-------------stig",sensor[i].stig.n)
 							-- see if I can unload
 							for j = 1, 6 do
 								if sensor[i].stig[j] == true then
-									print("-----------stig",j)
 									local usig = sensor[i]
 									local stigvec = getStigVector(j,usig.dF,usig.dU)
 									if stigvec.x < 0 then	-- unload direction check
-										usig.l = Vec3:create(usig.l.x,usig.l.y,usig.l.z)
-										local lenori = usig.l:len()
-										usig.l = usig.l + stigvec 
-										local lenlat = usig.l:len()
+										usig.ll = Vec3:create(usig.l.x,usig.l.y,usig.l.z)
+											-- usig is sensor[i], can sabotage sensor[i].l
+										local lenori = usig.ll:len()
+										usig.ll = usig.ll + stigvec 
+										local lenlat = usig.ll:len()
 										if (lenori > lenlat) then
-											father.data.unloadsig = usig
+											father.data.unloadsig = {}
+											father.data.unloadsig.l = usig.ll
+											father.data.unloadsig.dF = usig.dF
+											father.data.unloadsig.dU = usig.dU
 											robot:setspeed(0) robot:setturn(0)
 											return "armdown"
 										end
@@ -198,13 +200,9 @@ local movestate = State:create
 				for i = 1, sensor.n do
 					--if sensor[i].type == BOX and sensor[i].beingcarried == false then	-- a uncarried box
 					if sensor[i].type == BOX then	-- a uncarried box
-						print("meet a box when armdown")
 						local l = Vec3:create(sensor[i].l.x,sensor[i].l.y,sensor[i].l.z)
-						print("l = ",l)
-						print("unloadsig.l = ",father.data.unloadsig.l)
-						print("len = ",(l - father.data.unloadsig.l):len())
 						if (l - father.data.unloadsig.l):len() < boxsize then
-							print("find a hit")
+							print("armdown find a hit")
 							father.data.turnbackflag = 1
 							return "armupstep"
 						end

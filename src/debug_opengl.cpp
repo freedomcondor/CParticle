@@ -80,8 +80,8 @@ float RotateStep = 0.500f, ScaleStep = 0.05, MoveStep = 0.03;
 int FrameTime = 30;	// draw frequency
 int StepTime = 30;		// step frequency
 
-int PAUSE = 1;
-//int PAUSE = 0;
+//int PAUSE = 1;
+int PAUSE = 0;
 
 int Vision_type = 0;			// 1 first sight, 0 third sight
 int Vision_Control = 1;			// control port 1 or 2
@@ -308,6 +308,10 @@ void myStep(int id)
 	{
 		if (PAUSE == 0)
 			function_step(StepTime);	// time step in ms
+		else
+		{
+			int i = 0;	// for debug
+		}
 		glutTimerFunc(StepTime,myStep,id);
 	}
 }
@@ -320,6 +324,11 @@ void myIdle(void)
 
 	if (PAUSE == 0)
 		function_step(StepTime);
+	else
+	{
+//		int i = 0;	// for debug
+//		PAUSE = 0;
+	}
 	myDisplay();
 }
 #endif
