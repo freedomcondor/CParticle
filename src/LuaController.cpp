@@ -116,10 +116,24 @@ int unsetstig(lua_State* L)
 	box->unsetstig(x);
 	return 0;
 }
+int unsetfix(lua_State* L)
+{
+	Box* box = (Box*)lua_touserdata(L,-2);
+	box->unsetfix(x);
+	return 0;
+}
+int setfix(lua_State* L)
+{
+	Box* box = (Box*)lua_touserdata(L,-2);
+	box->setfix(x);
+	return 0;
+}
 static const luaL_Reg clib_box[] = 
 {
 	{"setstig",setstig},
 	{"unsetstig",unsetstig},
+	{"setfix",setfix},
+	{"unsetfix",unsetfix},
 	{NULL,NULL},
 };
 

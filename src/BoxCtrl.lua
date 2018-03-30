@@ -10,6 +10,9 @@ function init()
 end
 
 function step()
+	for i = 1, sensor.n do
+
+	end
 	--print("box lua step",box)
 	--print("boxbeing carried",beingcarried)
 	--[[

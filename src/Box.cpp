@@ -138,3 +138,14 @@ Vector3 Box::getStigVector(int x) const	//x is FRONT/BACK/...
 	else
 		return Vector3(0,0,0);
 }
+
+int Box::setfix()
+{
+	fixed = 1;
+	return 0;
+}
+int Box::unsetfix()
+{
+	fixed = 0;
+	return 0;
+}

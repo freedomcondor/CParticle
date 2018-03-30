@@ -61,6 +61,8 @@ public:
 	int run(double time);
 	int setstig(int x);
 	int unsetstig(int x);
+	int unsetfix();
+	int setfix();
 };
 
 #endif
