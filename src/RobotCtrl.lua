@@ -72,6 +72,7 @@ local movestate = State:create
 			armcount = 0,
 			armspeed = 90 * 10,
 			unloadsig = nil,
+			turnbackflag = 0;
 	},
 	substates = {
 		random = {method = 
@@ -80,7 +81,8 @@ local movestate = State:create
 					if frontcheck(sensor[i]) == true and sensor[i].type == ROBOT then	-- 0 box
 						--return "turnback"
 					end
-					if frontcheck(sensor[i]) == true and sensor[i].type == BOX then	-- 1 box
+					if frontcheck(sensor[i]) == true and 
+					   sensor[i].type == BOX and sensor[i].beingcarried == false then	-- 1 box
 						if carrying == false and sensor[i].fixed == false then	-- if can carry
 							--print("carry");
 							robot:tocarry(sensor[i].obj)
@@ -110,6 +112,7 @@ local movestate = State:create
 					end
 					if frontcheck(sensor[i]) == true and sensor[i].type == WALL then	-- 2 wall
 						--print("touchwall");
+						--[[
 						if carrying == true then
 							print("armdown");
 							father.data.unloadsig = sensor[i]
@@ -118,7 +121,8 @@ local movestate = State:create
 						else
 							return "turnback"
 						end
-						--return "turnback"
+						--]]
+						return "turnback"
 					end
 				end
 				robot:setturn((math.random()-0.5)*1800)
@@ -161,7 +165,12 @@ local movestate = State:create
 				father.data.armcount = father.data.armcount + armL
 				if father.data.armcount > 90 then
 					robot:setarm(90)
-					return "random"
+					if father.data.turnbackflag == 1 then
+						father.data.turnbackflag = 0
+						return "turnback"
+					else
+						return "random"
+					end
 				end
 				robot:setarm(father.data.armcount)
 			end},
@@ -176,6 +185,25 @@ local movestate = State:create
 			function(_currentstate,father)
 				local armspeed = father.data.armspeed
 				local armL = armspeed * steptime	-- steptime is global
+
+				-- check box hit, goto armup
+				print("sensor.n",sensor.n)
+				for i = 1, sensor.n do
+					--if sensor[i].type == BOX and sensor[i].beingcarried == false then	-- a uncarried box
+					if sensor[i].type == BOX then	-- a uncarried box
+						print("meet a box when armdown")
+						local l = Vec3:create(sensor[i].l.x,sensor[i].l.y,sensor[i].l.z)
+						print("l = ",l)
+						print("unloadsig.l = ",father.data.unloadsig.l)
+						print("len = ",(l - father.data.unloadsig.l):len())
+						if (l - father.data.unloadsig.l):len() < boxsize then
+							print("find a hit")
+							father.data.turnbackflag = 1
+							return "armupstep"
+						end
+				   end
+				end
+
 				father.data.armcount = father.data.armcount - armL
 				if father.data.armcount < 0 then
 					robot:setarm(0)

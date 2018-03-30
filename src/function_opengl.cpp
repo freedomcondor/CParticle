@@ -39,8 +39,8 @@ int function_exit()
 	return 0;
 }
 
-#define N_ROBOTS 1
-#define N_BOXES 2
+#define N_ROBOTS 50
+#define N_BOXES 50
 Robot robots[N_ROBOTS];
 int n_robots = N_ROBOTS;
 Box box[N_BOXES];
@@ -93,6 +93,14 @@ int function_step(double time)	// time in ms
 	}
 	for (int i = 0; i < n_robots; i++)
 		robots[i].run(time/1000);
+
+	for (int i = 0; i < n_boxes-1; i++)
+		for (int j = i+1; j < n_boxes; j++)
+		{
+			box[i].sensor.sense(box[j]);
+			box[j].sensor.sense(box[i]);
+		}
+
 	for (int i = 0; i < n_boxes; i++)
 		box[i].run(time/1000);
 
@@ -196,6 +204,7 @@ int drawCube(double half, double x, double y, double z,
 						  double ux,double uy,double uz)
 {
 	drawCube(half,x,y,z,fx,fy,fz,ux,uy,uz,"0");
+	return 0;
 }
 
 int drawCube(double half, double x, double y, double z, 

@@ -105,7 +105,7 @@ int RobotController::init(int* r)
 int setstig(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
-	double x = lua_tonumber(L,-1);
+	int x = lua_tonumber(L,-1);
 	box->setstig(x);
 	return 0;
 }
@@ -209,6 +209,13 @@ int lua_pushSig(lua_State *L, Signal sig)
 
 		if (sig.type == SIGBOX)
 		{
+			lua_pushstring(L,"beingcarried");
+			if ( ((Box*)(sig.obj))->beingcarried == 1  )
+				lua_pushboolean(L,true);
+			else
+				lua_pushboolean(L,false);
+	  		lua_settable(L,-3);
+
 			lua_pushstring(L,"fixed");
 			if ( ((Box*)(sig.obj))->fixed == 1  )
 				lua_pushboolean(L,true);
@@ -250,6 +257,7 @@ int lua_pushstig(lua_State *L, Box *box)
 	lua_pushstring(L,"n");
 	lua_pushnumber(L,box->stign);
 	lua_settable(L,-3);
+	return 0;
 }
 
 int lua_pushVec3(lua_State *L, Vector3 vec)
@@ -277,6 +285,7 @@ int BoxController::step(double time)
 		lua_pushboolean(L,true);
 	lua_setglobal(L,"beingcarried");
 	LuaController::step(time);
+	return 0;
 }
 
 int RobotController::step(double time)
@@ -289,6 +298,7 @@ int RobotController::step(double time)
 	lua_setglobal(L,"carrying");
 
 	LuaController::step(time);
+	return 0;
 }
 int LuaController::step(double time)
 {
