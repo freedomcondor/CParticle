@@ -87,6 +87,9 @@ local movestate = State:create
 							--print("carry");
 							robot:tocarry(sensor[i].obj)
 							return "armup"
+						else if carrying == true and sensor[i].fixed == false then
+							-- just go away
+							return "turnback"
 						else if carrying == false and sensor[i].fixed == true then
 							-- just go away
 							return "turnback"
@@ -100,15 +103,19 @@ local movestate = State:create
 									local stigvec = getStigVector(j,usig.dF,usig.dU)
 									if stigvec.x < 0 then	-- unload direction check
 										usig.l = Vec3:create(usig.l.x,usig.l.y,usig.l.z)
+										local lenori = usig.l:len()
 										usig.l = usig.l + stigvec 
-										father.data.unloadsig = usig
-										robot:setspeed(0) robot:setturn(0)
-										return "armdown"
+										local lenlat = usig.l:len()
+										if (lenori > lenlat) then
+											father.data.unloadsig = usig
+											robot:setspeed(0) robot:setturn(0)
+											return "armdown"
+										end
 									end
 								end
 							end
 							return "turnback"
-						end end end
+						end end end end
 					end
 					if frontcheck(sensor[i]) == true and sensor[i].type == WALL then	-- 2 wall
 						--print("touchwall");
