@@ -106,26 +106,26 @@ int setstig(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
 	int x = lua_tonumber(L,-1);
-	box->setstig(x);
+	box->setstig(x-1);
 	return 0;
 }
 int unsetstig(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
-	double x = lua_tonumber(L,-1);
-	box->unsetstig(x);
+	int x = lua_tonumber(L,-1);
+	box->unsetstig(x-1);
 	return 0;
 }
 int unsetfix(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
-	box->unsetfix(x);
+	box->unsetfix();
 	return 0;
 }
 int setfix(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
-	box->setfix(x);
+	box->setfix();
 	return 0;
 }
 static const luaL_Reg clib_box[] = 
@@ -290,14 +290,34 @@ int lua_pushVec3(lua_State *L, Vector3 vec)
 }
 
 /////////////////////////////////////////////////////////////
+
+int BoxController::storesensor()
+{
+	pushSensor();
+	return 0;
+}
 int BoxController::step(double time)
 {
 	lua_settop(L,0);
+
+	// being carried
 	if ( ((Box *)box)->beingcarried == 0)
 		lua_pushboolean(L,false);
 	else
 		lua_pushboolean(L,true);
 	lua_setglobal(L,"beingcarried");
+
+	// fixed
+	if ( ((Box *)box)->fixed == 0)
+		lua_pushboolean(L,false);
+	else
+		lua_pushboolean(L,true);
+	lua_setglobal(L,"fixed");
+
+	// selfstig
+	lua_pushstig(L,(Box *)box);
+	lua_setglobal(L,"selfstig");
+
 	LuaController::step(time);
 	return 0;
 }
@@ -311,13 +331,13 @@ int RobotController::step(double time)
 		lua_pushboolean(L,true);
 	lua_setglobal(L,"carrying");
 
+	pushSensor();
 	LuaController::step(time);
 	return 0;
 }
 int LuaController::step(double time)
 {
 	//lua_settop(L,0);
-	pushSensor();
 
 	lua_pushnumber(L,time);
 	lua_setglobal(L,"steptime");

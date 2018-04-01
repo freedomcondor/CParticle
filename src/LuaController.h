@@ -33,6 +33,7 @@ public:
 	BoxController();
 	int init(int *r);
 	int step(double time);
+	int storesensor();
 };
 
 #endif

@@ -76,7 +76,7 @@ float EyeX2 = EyeX2Init,EyeY2 = EyeY2Init,	EyeZ2 = EyeZ2Init;						// all unit m
 float RotateStep = 0.500f, ScaleStep = 0.05, MoveStep = 0.03;
 //float RotateStep = 0.0300f, ScaleStep = 0.003, MoveStep = 0.001;
 
-//#define TIMESTEP
+#define TIMESTEP
 int FrameTime = 30;	// draw frequency
 int StepTime = 30;		// step frequency
 

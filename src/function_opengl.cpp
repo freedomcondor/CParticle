@@ -62,7 +62,6 @@ int function_init()
 		box[0].setstig(FRONT);
 		box[0].setstig(LEFT);
 		box[0].setstig(RIGHT);
-		box[0].setstig(DOWN);
 		box[0].fixed = 1;
 
 	for (int i = 1; i < n_boxes; i++)
@@ -100,6 +99,8 @@ int function_step(double time)	// time in ms
 			box[i].sensor.sense(box[j]);
 			box[j].sensor.sense(box[i]);
 		}
+	for (int i = 0; i < n_boxes; i++)
+		box[i].ctrlStoresensor();
 
 	for (int i = 0; i < n_boxes; i++)
 		box[i].run(time/1000);

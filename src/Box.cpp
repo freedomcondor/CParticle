@@ -91,6 +91,12 @@ int Box::ctrlInit()
 	return 0;
 }
 
+int Box::ctrlStoresensor()
+{
+	ctrl.storesensor();
+	return 0;
+}
+
 //----------------------------------------------------------------
 int Box::run(double time)
 {
@@ -101,6 +107,7 @@ int Box::run(double time)
 
 	return 0;
 }
+
 
 int Box::sensorUpdate()
 {

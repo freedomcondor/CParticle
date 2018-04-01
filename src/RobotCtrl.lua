@@ -48,8 +48,8 @@ end
 
 local getStigVector = function(x,_dF,_dU)
 	-- x == 1 ~ 6 which is FRONT/BACK/...
-	dF = Vec3:create(_dF.x,_dF.y,_dF.z)
-	dU = Vec3:create(_dU.x,_dU.y,_dU.z)
+	local dF = Vec3:create(_dF.x,_dF.y,_dF.z)
+	local dU = Vec3:create(_dU.x,_dU.y,_dU.z)
 	if x == FRONT then
 		return dF:nor() * boxsize
 	else if x == BACK then
@@ -196,7 +196,6 @@ local movestate = State:create
 				local armL = armspeed * steptime	-- steptime is global
 
 				-- check box hit, goto armup
-				print("sensor.n",sensor.n)
 				for i = 1, sensor.n do
 					--if sensor[i].type == BOX and sensor[i].beingcarried == false then	-- a uncarried box
 					if sensor[i].type == BOX then	-- a uncarried box

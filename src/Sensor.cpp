@@ -239,7 +239,7 @@ int Sensor::addSig(const Signal& s)
 
 bool Sensor::rangecheck(const Signal& x)
 {
-	if (x.l.len() < 0.1)
+	if (x.l.len() < 0.13)
 	{
 		if (  (x.type == SIGBOX) && ( ((Box*)(x.obj))->beingcarried == 1) )
 			return false;
