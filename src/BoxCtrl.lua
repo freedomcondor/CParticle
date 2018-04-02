@@ -40,11 +40,12 @@ function vec2stig(x)
 	else if (l - Vec3:create(0,0,-1)*boxsize):len() < boxsize / 2 then
 		return DOWN
 	end end end end end end
+	print("something impossible: you ask for a vec other than six direction:",x)
 end
 function stig2vec(x)
 	if x == FRONT then
 		return Vec3:create(1,0,0) * boxsize
-	else if x == END then
+	else if x == BACK then
 		return -Vec3:create(1,0,0) * boxsize
 	else if x == UP then
 		return Vec3:create(0,0,1) * boxsize
@@ -55,6 +56,7 @@ function stig2vec(x)
 	else if x == RIGHT then
 		return -Vec3:create(0,1,0) * boxsize
 	end end end end end end
+	print("something impossible: you ask for a stig other than six direction:",x)
 end
 
 local getStigVector = function(x,_dF,_dU)
@@ -88,21 +90,40 @@ function step()
 		return nil
 	end
 
-	-- clear my own stig
+	local perception = {}
 	for i = 1, sensor.n do
-		if sensor[i].type == BOX then
-			local l = Vec3:create(sensor[i].l.x,sensor[i].l.y,sensor[i].l.z)
-			for j = 1, 6 do
-				if selfstig[j] == true and
-				   (l - stig2vec(j)):len() < boxsize / 2 then
-				   	print("a stig unset")
-				    box:unsetstig(j)
-				end
+		local l = Vec3:create(sensor[i].l.x,sensor[i].l.y,sensor[i].l.z)
+		sensor[i].l = l
+		for j = 1, 6 do
+			if sensor[i].type == BOX and
+			   sensor[i].fixed == true and
+			   (l - stig2vec(j)):len() < boxsize / 2 then
+				perception[j] = sensor[i]
 			end
 		end
 	end
 
+	-- clear my own stig
+	for j = 1, 6 do
+		if selfstig[j] == true and perception[j] ~= nil then
+			box:unsetstig(j)
+		end
+	end
+
 	-- inhert others stig
+	for i = 1, 6 do
+		if perception[i] ~= nil then
+			for j = 1, 6 do
+				if perception[i].stig[j] == true and 
+				   (getStigVector(j,perception[i].dF,perception[i].dU) + perception[i].l):len() < boxsize / 2 then
+					print("i have an inhert")
+					local st = vec2stig(perception[i].l)
+					box:setstig(7 - st)
+				end
+			end
+		end
+	end
+	--[[
 	for i = 1, sensor.n do
 		if sensor[i].type == BOX then
 			for j = 1, 6 do
@@ -116,13 +137,6 @@ function step()
 				end
 			end
 		end
-	end
-
-	--[[
-	print("---------------------------------")
-	print("selfstig",selfstig.n)
-	for i = 1, 6 do
-		print("selfstig",selfstig[i])
 	end
 	--]]
 end
