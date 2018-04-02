@@ -105,7 +105,7 @@ function step()
 
 	-- clear my own stig
 	for j = 1, 6 do
-		if selfstig[j] == true and perception[j] ~= nil then
+		if selfstig[j] ~= 0 and perception[j] ~= nil then
 			box:unsetstig(j)
 		end
 	end
@@ -114,7 +114,7 @@ function step()
 	for i = 1, 6 do
 		if perception[i] ~= nil then
 			for j = 1, 6 do
-				if perception[i].stig[j] == true and 
+				if perception[i].stig[j] ~= 0 and 
 				   (getStigVector(j,perception[i].dF,perception[i].dU) + perception[i].l):len() < boxsize / 2 then
 					--print("i have an inhert")
 					local st = vec2stig(perception[i].l)

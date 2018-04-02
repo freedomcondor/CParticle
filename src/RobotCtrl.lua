@@ -79,7 +79,7 @@ local movestate = State:create
 			function(_currentstate,father) 
 				for i = 1, sensor.n do
 					if frontcheck(sensor[i]) == true and sensor[i].type == ROBOT then	-- 0 box
-						return "turnback"
+						--return "turnback"
 					end
 					if frontcheck(sensor[i]) == true and 
 					   sensor[i].type == BOX and sensor[i].beingcarried == false then	-- 1 box
@@ -96,7 +96,7 @@ local movestate = State:create
 						else if carrying == true and sensor[i].fixed == true then
 							-- see if I can unload
 							for j = 1, 6 do
-								if sensor[i].stig[j] == true then
+								if sensor[i].stig[j] ~= 0 then
 									local usig = sensor[i]
 									local stigvec = getStigVector(j,usig.dF,usig.dU)
 									if stigvec.x < 0 then	-- unload direction check

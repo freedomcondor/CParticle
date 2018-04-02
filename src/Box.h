@@ -61,6 +61,7 @@ public:
 	//----------------------------------------------------
 	int run(double time);
 	int setstig(int x);
+	int setstig(int x,int num);	// set stig[x] as num
 	int unsetstig(int x);
 	int unsetfix();
 	int setfix();

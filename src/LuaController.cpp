@@ -109,6 +109,16 @@ int setstig(lua_State* L)
 	box->setstig(x-1);
 	return 0;
 }
+
+int setstigas(lua_State* L)
+{
+	Box* box = (Box*)lua_touserdata(L,-2);
+	int x = lua_tonumber(L,-1);
+	int y = lua_tonumber(L,-1);
+	box->setstig(x-1,y);
+	return 0;
+}
+
 int unsetstig(lua_State* L)
 {
 	Box* box = (Box*)lua_touserdata(L,-2);
@@ -131,6 +141,7 @@ int setfix(lua_State* L)
 static const luaL_Reg clib_box[] = 
 {
 	{"setstig",setstig},
+	{"setstigas",setstigas},
 	{"unsetstig",unsetstig},
 	{"setfix",setfix},
 	{"unsetfix",unsetfix},
@@ -262,10 +273,13 @@ int lua_pushstig(lua_State *L, Box *box)
 	for (int i = 0; i < 6; i++)
 	{
 		lua_pushnumber(L,i+1);
+		lua_pushnumber(L,box->stig[i]);
+		/*
 		if ( box->stig[i] == 1  )
 			lua_pushboolean(L,true);
 		else
 			lua_pushboolean(L,false);
+		*/
 	  	lua_settable(L,-3);
 	}
 	lua_pushstring(L,"n");

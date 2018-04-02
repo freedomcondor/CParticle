@@ -115,6 +115,14 @@ int Box::sensorUpdate()
 	return 0;
 }
 
+int Box::setstig(int x,int num)	// set stig[x] as num
+{
+	if (stig[x] == 0) stign++;
+	stig[x] = num;
+
+	return 0;
+}
+
 int Box::setstig(int x)	// FRONT, LEFT, BACK ...
 {
 	stig[x] = 1;
