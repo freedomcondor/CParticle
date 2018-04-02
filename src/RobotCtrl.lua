@@ -79,7 +79,7 @@ local movestate = State:create
 			function(_currentstate,father) 
 				for i = 1, sensor.n do
 					if frontcheck(sensor[i]) == true and sensor[i].type == ROBOT then	-- 0 box
-						--return "turnback"
+						return "turnback"
 					end
 					if frontcheck(sensor[i]) == true and 
 					   sensor[i].type == BOX and sensor[i].beingcarried == false then	-- 1 box
@@ -142,7 +142,7 @@ local movestate = State:create
 		turnback = {method = 
 			function(_currentstate,father)
 				--print("turnback")
-				father.data.turncount = 180
+				father.data.turncount = math.random() * 360
 				robot:setspeed(0)
 				return "turnbackstep"
 			end},

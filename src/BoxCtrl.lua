@@ -116,9 +116,13 @@ function step()
 			for j = 1, 6 do
 				if perception[i].stig[j] == true and 
 				   (getStigVector(j,perception[i].dF,perception[i].dU) + perception[i].l):len() < boxsize / 2 then
-					print("i have an inhert")
+					--print("i have an inhert")
 					local st = vec2stig(perception[i].l)
 					box:setstig(7 - st)
+					if st == FRONT or st == BACK then to = LEFT end
+					if st == LEFT or st == RIGHT then to = FRONT end
+					if perception[to] == nil then box:setstig(to) end
+					if perception[7-to] == nil then box:setstig(7 - to) end
 				end
 			end
 		end
