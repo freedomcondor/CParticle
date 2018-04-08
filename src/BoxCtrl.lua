@@ -90,6 +90,7 @@ function step()
 		return nil
 	end
 
+	-- perception, see whos in my FRONT/BACK/LEFT..
 	local perception = {}
 	for i = 1, sensor.n do
 		local l = Vec3:create(sensor[i].l.x,sensor[i].l.y,sensor[i].l.z)
@@ -104,10 +105,20 @@ function step()
 	end
 
 	-- clear my own stig
+	local stigflag = 0
 	for j = 1, 6 do
 		if selfstig[j] ~= 0 and perception[j] ~= nil then
+			stigflag = 1
 			box:unsetstig(j)
+			selfstig.n = selfstig.n - 1
 		end
+	end
+
+	-- currently someting wrong
+	print("selfstig.n",selfstig.n)
+	if stigflag == 1 and selfstig.n == 0 then
+		print("i am full")
+		box:unsetfix()
 	end
 
 	-- inhert others stig

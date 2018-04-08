@@ -22,6 +22,7 @@
 /////////////////// control communications /////////////////
 double CH1 = 0,CH1_MAX = 30,CH1_MIN = -30,CH1_STEP = 0.05;
 double CH2 = 0,CH2_MAX = 30,CH2_MIN = -30,CH2_STEP = 0.01;
+int CMDCH1 = 1;
 
 ///////////////////  function definations /////////////////
 //
@@ -175,16 +176,20 @@ int drawBox(const Box& r)
 			 			r.dU.x, r.dU.y, r.dU.z);
 
 	int drawStig = 1;
-	if (drawStig == 1)
+	if (CMDCH1 == 1)
+	{
+	  if (drawStig == 1)
 		for (int i = 0; i < 6; i++)
 			if (r.stig[i] == 1)
 			{
 				Vector3 t = r.getStigVector(i);
 				t += r.l;
+
 				drawCube(r.size/2, 	t.x,  	t.y,  	t.z,
 			 						r.dF.x, r.dF.y, r.dF.z,
 			 						r.dU.x, r.dU.y, r.dU.z, "wire");
 			}
+	}
 
 	return 0;
 }

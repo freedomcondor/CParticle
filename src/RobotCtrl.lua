@@ -25,6 +25,8 @@ local Vec3 = require("Vector3")
 	}
 --]]
 
+math.randomseed(1)
+
 local ROBOT = 0
 local BOX = 1
 local WALL = 2
@@ -89,10 +91,10 @@ local movestate = State:create
 							return "armup"
 						else if carrying == true and sensor[i].fixed == false then
 							-- just go away
-							return "turnback"
+							--return "turnback"
 						else if carrying == false and sensor[i].fixed == true then
 							-- just go away
-							return "turnback"
+							--return "turnback"
 						else if carrying == true and sensor[i].fixed == true then
 							-- see if I can unload
 							for j = 1, 6 do

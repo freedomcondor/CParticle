@@ -600,6 +600,12 @@ void BoardKeysOperate()
 		if (CH2 - CH2_STEP > CH2_MIN)
 			CH2 -= CH2_STEP;
 	}
+
+	if (KeyStates['o'] == 1)		
+	{
+		CMDCH1 = 1 - CMDCH1;
+		KeyStates['o'] = 0;
+	}
 }
 
 /////////////////////////  mouse //////////////////////////////
