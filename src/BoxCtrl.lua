@@ -9,6 +9,7 @@ local Vec3 = require("Vector3")
   	box: functions
 	sensor
 	beingcarried = true/false
+	fixed
 	selfstig
 --]]
 
@@ -115,11 +116,14 @@ function step()
 	end
 
 	-- currently someting wrong
+	--[[
+	-- to clear and unset myself
 	print("selfstig.n",selfstig.n)
 	if stigflag == 1 and selfstig.n == 0 then
 		print("i am full")
 		box:unsetfix()
 	end
+	--]]
 
 	-- inhert others stig
 	for i = 1, 6 do
